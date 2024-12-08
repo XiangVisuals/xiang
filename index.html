@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>图片展示网页</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- 顶部导航栏 -->
+    <header>
+        <div class="header-left">
+            <img src="https://cllli.oss-cn-beijing.aliyuncs.com/logo/logo.png" alt="Logo" class="logo">
+        </div>
+        <div class="header-right">
+            <a href="https://photography.cllli.com/" target="_blank">photograph</a>
+            <a href="https://tv.cllli.com/" target="_blank">TV</a>
+            <a href="https://www.instagram.com/shutterbug.xiang/profilecard/?igsh=dHJrZGtqZ2NiOTJ2" target="_blank">
+                <img src="https://cllli.oss-cn-beijing.aliyuncs.com/logo/ins.svg" alt="Instagram" class="social-icon">
+            </a>
+        </div>
+    </header>
+
+    <main>
+        <!-- 图片展示部分 -->
+        <section class="image-section">
+            <div class="image-container">
+                <!-- 使用多个img标签，每个图片设置不同的类名 -->
+                <img src="https://cllli.oss-cn-beijing.aliyuncs.com/images/1.jpg" alt="展示图片" class="image visible">
+                <img src="https://cllli.oss-cn-beijing.aliyuncs.com/images/2.jpg" alt="展示图片" class="image hidden">
+                <img src="https://bpic.588ku.com/video_listen/588ku_pic/21/07/04/d1e23cb626deb66bc53fb33139d1f46a.jpg" alt="展示图片" class="image hidden">
+            </div>
+        </section>
+
+        <!-- 图片切换按钮 -->
+        <button class="prev-button" onclick="changeImage(-1)">&#10094;</button>
+        <button class="next-button" onclick="changeImage(1)">&#10095;</button>
+
+        <!-- 内容部分 -->
+        <section class="content-section">
+            <div class="content">
+                <h2>欢迎访问我们的页面</h2>
+                <p>这是一些介绍性内容...</p>
+                <p>更多内容...</p>
+            </div>
+        </section>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
