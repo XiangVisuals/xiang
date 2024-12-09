@@ -188,7 +188,7 @@ button:active {
     .cursor {
         display: none;  /* 移动端设备隐藏自定义光标 */
     }
-    
+
     .content-section {
         grid-template-columns: 1fr;  /* 在小屏幕下每行显示一张图片 */
         gap: 15px;  /* 减少图片间距 */
@@ -205,7 +205,6 @@ button:active {
     .content-image {
         max-width: 95%;  /* 在移动端适配时限制图片的最大宽度 */
     }
-
     
     
 }
@@ -229,7 +228,25 @@ button:active {
     .content-image {
         max-width: 90%;  /* 更严格限制图片最大宽度 */
     }
-
+    
+    .image-container {
+        width: 100vw;  /* 容器宽度为视口宽度 */
+        height: 100vh; /* 容器高度为视口高度 */
+        display: flex;
+        justify-content: center;  /* 水平居中对齐 */
+        align-items: center;      /* 垂直居中对齐 */
+        overflow: hidden;         /* 防止超出容器的部分 */
+    }
+    
+    .image-container img {
+        transform: rotate(90deg);  /* 旋转图片90度 */
+        width: auto;               /* 宽度自适应 */
+        height: auto;              /* 高度自适应 */
+        max-width: 218%;           /* 最大宽度为容器的宽度 */
+        object-fit: cover;       /* 保持原比例且完整显示 */
+    }
+    
+    
 }
 
 
