@@ -1,6 +1,6 @@
 ## 项目简介：自定义光标与图片展示网站
 
-![图片展示]([https://cllli.oss-cn-beijing.aliyuncs.com/images/1.jpg](https://cllli.oss-cn-beijing.aliyuncs.com/Cli/2.png))
+![图片展示](https://cllli.oss-cn-beijing.aliyuncs.com/Cli/2.png)
 
 这是一个具有自定义光标、图片展示、滚动动态效果和加载动画的网页项目。该项目包含以下主要功能：
 
