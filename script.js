@@ -83,9 +83,9 @@ imageContainer.addEventListener('mouseenter', () => {
     cursor.style.height = '10px';
 });
 
-
-
-
-
-
-
+// 判断设备类型并隐藏光标（移动设备）
+if (/Mobi|Android/i.test(navigator.userAgent)) {
+    if (cursor) {
+        cursor.style.display = 'none';  // 在移动设备上隐藏光标
+    }
+}
