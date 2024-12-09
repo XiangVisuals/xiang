@@ -185,6 +185,10 @@ button:active {
 
 /* 移动端适配 */
 @media (max-width: 768px) {
+    .cursor {
+        display: none;  /* 移动端设备隐藏自定义光标 */
+    }
+    
     .content-section {
         grid-template-columns: 1fr;  /* 在小屏幕下每行显示一张图片 */
         gap: 15px;  /* 减少图片间距 */
@@ -201,11 +205,17 @@ button:active {
     .content-image {
         max-width: 95%;  /* 在移动端适配时限制图片的最大宽度 */
     }
+
+    
     
 }
 
 /* 超小屏幕适配（如手机） */
 @media (max-width: 480px) {
+    .cursor {
+        display: none;  /* 移动端设备隐藏自定义光标 */
+    }
+
     .content-section {
         padding: 30px 10px;  /* 更小屏幕的内边距 */
     }
@@ -219,6 +229,7 @@ button:active {
     .content-image {
         max-width: 90%;  /* 更严格限制图片最大宽度 */
     }
+
 }
 
 
