@@ -54,18 +54,19 @@ header {
     padding: 10px 150px;
     background-color: #fff;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease-in-out;
 }
 
 .social-icon {
-    width: 24px;  /* 图标大小 */
+    width: 24px;
     height: 24px;
     transition: transform 0.2s ease;
-    vertical-align: middle;  /* 确保图标与文字垂直居中 */
-    transform: translateY(-2px);  /* 微调图标向上位置 */
+    vertical-align: middle;
+    transform: translateY(-2px);
 }
 
 .social-icon:hover {
-    transform: scale(1.1) translateY(-2px);  /* 悬停时放大并保持微调位置 */
+    transform: scale(1.1) translateY(-2px);
 }
 
 .header-left .logo {
@@ -244,7 +245,78 @@ button:active {
         object-fit: cover;       /* 保持原比例且完整显示 */
     }
     
+    header {
+        visibility: visible;  /* 默认隐藏顶栏 */
+        background-color: #fff; /* 保证背景为白色 */
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 100vh;
+        flex-direction: column; /* 竖向排列 */
+        justify-content: center; /* 内容居中 */
+        align-items: center;
+        z-index: 100;
+        padding: 30px 0; /* 调整竖向排列的内边距 */
+        opacity: 0;  /* 初始透明度为0 */
+        transition: transform 0.5s ease, opacity 0.5s ease, visibility 0s 0.5s; /* 添加过渡效果 */
+    }
+
+    /* 确保 logo 在左上角 */
+    .header-left {
+        position: fixed;
+        top: 30px;  /* 距离顶部一定间距 */
+        left: 30px; /* 距离左侧一定间距 */
+        z-index: 200;  /* 确保社交图标在顶层，不会被其他内容遮挡 */
+    }
     
+    .social-icon {
+        position: fixed; /* 使用固定定位 */
+        bottom: 30px; /* 距离底部20px */
+        right: 30px;  /* 距离右侧20px */
+    }
+    
+    /* 图片展示部分 */
+    .image-section {
+        height: 100vh;  /* 确保图片部分在移动端满屏显示 */
+    }
+
+    /* 显示一个切换按钮，位于右上角 */
+    .menu-toggle {
+        position: fixed;
+        top: 15px;
+        right: 15px;
+        color: white;
+        border: none;
+        padding: 10px;
+        border-radius: 50%;
+        font-size: 18px;
+        cursor: pointer;
+        z-index: 101;
+        mix-blend-mode: difference;  /* 反转光标下方区域的颜色 */
+        
+    }
+    
+    /* 如果显示了 header */
+    .show-header header {
+        visibility: visible;  /* 顶栏可见 */
+        transform: translateY(0);  /* 顶栏显示 */
+        opacity: 1;  /* 顶栏完全可见 */
+        transition: transform 0.5s ease, opacity 0.5s ease, visibility 0s; /* 添加过渡效果 */
+    }
+
+    /* 隐藏 header 时 */
+    header {
+        opacity: 0;  /* 顶栏完全透明 */
+        visibility: hidden;  /* 顶栏不可见 */
+    }
+
+    .header-right a {
+        display: block;
+        margin-bottom: 20px;  /* 每个链接竖着排列 */
+        text-align: center;
+    } 
+
 }
 
 
