@@ -90,7 +90,9 @@ if (/Mobi|Android/i.test(navigator.userAgent)) {
     }
 }
 
-document.querySelector('.menu-toggle').addEventListener('click', function() {
-    document.body.classList.toggle('show-header');
+document.querySelectorAll('.menu-toggle').forEach(btn => {
+    btn.addEventListener('click', () => {
+        document.body.classList.toggle('show-header');
+        btn.classList.toggle('active');
+    });
 });
-
