@@ -182,34 +182,9 @@ button:active {
     max-width: 80%;  /* 控制文字最大宽度 */
 }
 
+
 /* 移动端适配 */
 @media (max-width: 768px) {
-    .cursor {
-        display: none;  /* 移动端设备隐藏自定义光标 */
-    }
-
-    .content-section {
-        grid-template-columns: 1fr;  /* 在小屏幕下每行显示一张图片 */
-        gap: 15px;  /* 减少图片间距 */
-        padding: 40px 20px;  /* 调整整体内边距，避免内容过于紧凑 */
-    }
-
-    .content-description {
-        font-size: 13px;  /* 在小屏幕上缩小文字 */
-        margin-top: 8px;  /* 缩小文字与图片之间的间距 */
-        color: #999;  /* 使用更浅的文字颜色 */
-        max-width: 90%;  /* 增加文字区域最大宽度 */
-    }
-
-    .content-image {
-        max-width: 95%;  /* 在移动端适配时限制图片的最大宽度 */
-    }
-    
-    
-}
-
-/* 超小屏幕适配（如手机） */
-@media (max-width: 480px) {
     .cursor {
         display: none;  /* 移动端设备隐藏自定义光标 */
     }
@@ -242,7 +217,7 @@ button:active {
         width: auto;               /* 宽度自适应 */
         height: auto;              /* 高度自适应 */
         max-width: 218%;           /* 最大宽度为容器的宽度 */
-        object-fit: cover;       /* 保持原比例且完整显示 */
+        object-fit: cover;        /* 保持原比例且完整显示 */
     }
     
     header {
@@ -253,6 +228,7 @@ button:active {
         left: 0;
         right: 0;
         height: 100vh;
+        display: flex;
         flex-direction: column; /* 竖向排列 */
         justify-content: center; /* 内容居中 */
         align-items: center;
@@ -286,17 +262,63 @@ button:active {
         position: fixed;
         top: 15px;
         right: 15px;
-        color: white;
+        --color: #ffffff;
+        width: 36px;
+        height: 36px;
+        padding: 20px;
+        margin: 0;
+        outline: none;
         border: none;
-        padding: 10px;
-        border-radius: 50%;
-        font-size: 18px;
+        background: none;
         cursor: pointer;
         z-index: 101;
         mix-blend-mode: difference;  /* 反转光标下方区域的颜色 */
-        
+        -webkit-appearance: none;
+        -webkit-tap-highlight-color: transparent;
     }
-    
+
+    .menu-toggle svg {
+        width: 64px;
+        height: 48px;
+        top: 8px;
+        left: -20px;
+        stroke: var(--color);
+        stroke-width: 4px;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        fill: none;
+        display: block;
+        position: absolute;
+        mix-blend-mode: difference;  /* 反转光标下方区域的颜色 */
+    }
+
+    .menu-toggle svg path {
+        transition: stroke-dasharray var(--duration, .85s) var(--easing, ease) var(--delay, 0s), stroke-dashoffset var(--duration, .85s) var(--easing, ease) var(--delay, 0s);
+        stroke-dasharray: var(--array-1, 26px) var(--array-2, 100px);
+        stroke-dashoffset: var(--offset, 126px);
+        transform: translateZ(0);
+    }
+
+    .menu-toggle.active svg path {
+        --offset: 57px;
+    }
+
+    .menu-toggle.active svg path:nth-child(1),
+    .menu-toggle.active svg path:nth-child(3) {
+        --delay: .15s;
+        --easing: cubic-bezier(.2, .4, .2, 1.1);
+    }
+
+    .menu-toggle.active svg path:nth-child(2) {
+        --duration: .4s;
+        --offset: 2px;
+        --array-1: 1px;
+    }
+
+    .menu-toggle.active svg path:nth-child(3) {
+        --offset: 58px;
+    }
+
     /* 如果显示了 header */
     .show-header header {
         visibility: visible;  /* 顶栏可见 */
@@ -315,9 +337,9 @@ button:active {
         display: block;
         margin-bottom: 20px;  /* 每个链接竖着排列 */
         text-align: center;
-    } 
-
+    }
 }
+
 
 
 /* 加载动画 */
