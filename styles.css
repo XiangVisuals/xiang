@@ -20,6 +20,7 @@ body.loaded {
     opacity: 1;
 }
 
+
 /* 自定义光标样式 */
 .cursor {
     position: fixed;
@@ -190,7 +191,8 @@ button:active {
     }
 
     .content-section {
-        padding: 30px 10px;  /* 更小屏幕的内边距 */
+        padding: 40px 10px;  /* 减小上下左右的间距 */
+        grid-template-columns: 1fr;  /* 每行显示一张图片 */
     }
 
     .content-description {
@@ -219,6 +221,7 @@ button:active {
         max-width: 218%;           /* 最大宽度为容器的宽度 */
         object-fit: cover;        /* 保持原比例且完整显示 */
     }
+    
 
         /* 显示一个切换按钮，位于右上角 */
         .menu-toggle {
@@ -338,6 +341,13 @@ header {
 .image-section {
     height: 100vh;  /* 确保图片部分在移动端满屏显示 */
 }
+
+.header-right a {
+    display: block;
+    margin-bottom: 20px;  /* 每个链接竖着排列 */
+    text-align: center;
+} 
+
 
     
 }
