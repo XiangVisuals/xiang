@@ -59,7 +59,7 @@ document.addEventListener('mousemove', (e) => {
 });
 
 // 鼠标悬浮在按钮、链接等元素时放大光标
-const clickableElements = document.querySelectorAll('button, a, img');
+const clickableElements = document.querySelectorAll('button, a, img, .header-left');
 
 // 确保只有这些元素会放大光标，避免 image-container 放大
 clickableElements.forEach((element) => {
@@ -89,3 +89,8 @@ if (/Mobi|Android/i.test(navigator.userAgent)) {
         cursor.style.display = 'none';  // 在移动设备上隐藏光标
     }
 }
+
+document.querySelector('.menu-toggle').addEventListener('click', function() {
+    document.body.classList.toggle('show-header');
+});
+
