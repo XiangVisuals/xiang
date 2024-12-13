@@ -59,7 +59,7 @@ document.addEventListener('mousemove', (e) => {
 });
 
 // 鼠标悬浮在按钮、链接等元素时放大光标
-const clickableElements = document.querySelectorAll('button, a, img, .header-left');
+const clickableElements = document.querySelectorAll('button, a, img, .header-left, .logo');
 
 // 确保只有这些元素会放大光标，避免 image-container 放大
 clickableElements.forEach((element) => {
@@ -90,9 +90,18 @@ if (/Mobi|Android/i.test(navigator.userAgent)) {
     }
 }
 
+// 菜单按钮点击效果
 document.querySelectorAll('.menu-toggle').forEach(btn => {
     btn.addEventListener('click', () => {
         document.body.classList.toggle('show-header');
         btn.classList.toggle('active');
+    });
+});
+
+// 禁止页面滚动的功能
+document.querySelectorAll('.menu-toggle').forEach(btn => {
+    btn.addEventListener('click', () => {
+        // 切换滚动禁用
+        document.body.classList.toggle('no-scroll');
     });
 });
