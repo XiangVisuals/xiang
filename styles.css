@@ -225,7 +225,7 @@ button:active {
 
         /* 显示一个切换按钮，位于右上角 */
         .menu-toggle {
-            position: fixed;
+            position: absolute;  /* 更改为 absolute */
             top: 15px;
             right: 15px;
             --color: #ffffff;
@@ -234,13 +234,12 @@ button:active {
             padding: 20px;
             margin: 0;
             outline: none;
-            position: fixed;
             border: none;
             background: none;
             cursor: pointer;
             z-index: 101;
             mix-blend-mode: difference;  /* 反转光标下方区域的颜色 */
-            -webkit-appearence: none;
+            -webkit-appearance: none;
             -webkit-tap-highlight-color: transparent;
             svg {
                 width: 64px;
