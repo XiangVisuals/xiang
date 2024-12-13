@@ -50,9 +50,10 @@ button:hover .cursor, a:hover .cursor, img:hover .cursor {
 /* 顶栏样式 */
 header {
     display: flex;
+    position: relative;
     justify-content: space-between;
     align-items: center;
-    padding: 10px 150px;
+    padding: 22px 180px;
     background-color: #fff;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     transition: transform 0.3s ease-in-out;
@@ -70,8 +71,20 @@ header {
     transform: scale(1.1) translateY(-2px);
 }
 
-.header-left .logo {
+.logo {
     height: 45px;
+    display: flex;
+    justify-content: space-between;
+    position: absolute;
+    z-index: 10;
+    left: 8%;
+    top: 1%; /* 或者设置一个合适的值 */
+}
+
+
+/* 右侧内容 */
+.header-right {
+    margin-left: auto; /* 推动右侧内容到右边 */
 }
 
 .header-right a {
@@ -204,7 +217,7 @@ button:active {
     .content-image {
         max-width: 90%;  /* 更严格限制图片最大宽度 */
     }
-    
+
     .image-container {
         width: 100vw;  /* 容器宽度为视口宽度 */
         height: 100vh; /* 容器高度为视口高度 */
@@ -213,7 +226,7 @@ button:active {
         align-items: center;      /* 垂直居中对齐 */
         overflow: hidden;         /* 防止超出容器的部分 */
     }
-    
+
     .image-container img {
         transform: rotate(90deg);  /* 旋转图片90度 */
         width: auto;               /* 宽度自适应 */
@@ -221,170 +234,174 @@ button:active {
         max-width: 218%;           /* 最大宽度为容器的宽度 */
         object-fit: cover;        /* 保持原比例且完整显示 */
     }
-    
 
-        /* 显示一个切换按钮，位于右上角 */
-        .menu-toggle {
-            position: absolute;  /* 更改为 absolute */
-            top: 15px;
-            right: 15px;
-            --color: #ffffff;
-            width: 36px;
-            height: 36px;
-            padding: 20px;
-            margin: 0;
-            outline: none;
-            border: none;
-            background: none;
-            cursor: pointer;
-            z-index: 101;
+    /* 显示一个切换按钮，位于右上角 */
+    .menu-toggle {
+        position: absolute;  /* 更改为 absolute */
+        top: 15px;
+        right: 15px;
+        --color: #ffffff;
+        width: 36px;
+        height: 36px;
+        padding: 20px;
+        margin: 0;
+        outline: none;
+        border: none;
+        background: none;
+        cursor: pointer;
+        z-index: 101;
+        mix-blend-mode: difference;  /* 反转光标下方区域的颜色 */
+        -webkit-tap-highlight-color: transparent;
+        svg {
+            width: 64px;
+            height: 48px;
+            top: 8px;
+            left: -20px;
+            stroke: var(--color);
+            stroke-width: 2px;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            fill: none;
+            display: block;
+            position: absolute;
             mix-blend-mode: difference;  /* 反转光标下方区域的颜色 */
-            -webkit-appearance: none;
-            -webkit-tap-highlight-color: transparent;
-            svg {
-                width: 64px;
-                height: 48px;
-                top: 8px;
-                left: -20px;
-                stroke: var(--color);
-                stroke-width: 2px;
-                stroke-linecap: round;
-                stroke-linejoin: round;
-                fill: none;
-                display: block;
-                position: absolute;
-                mix-blend-mode: difference;  /* 反转光标下方区域的颜色 */
-                path {
-                    transition: stroke-dasharray var(--duration, .85s) var(--easing, ease) var(--delay, 0s), stroke-dashoffset var(--duration, .85s) var(--easing, ease) var(--delay, 0s);
-                    stroke-dasharray: var(--array-1, 26px) var(--array-2, 100px);
-                    stroke-dashoffset: var(--offset, 126px);
-                    transform: translateZ(0);
-                    &:nth-child(2) {
-                        --duration: .7s;
-                        --easing: ease-in;
-                        --offset: 100px;
-                        --array-2: 74px;
-                    }
-                    &:nth-child(3) {
-                        --offset: 133px;
-                        --array-2: 107px;
-                    }
+            path {
+                transition: stroke-dasharray var(--duration, .85s) var(--easing, ease) var(--delay, 0s), stroke-dashoffset var(--duration, .85s) var(--easing, ease) var(--delay, 0s);
+                stroke-dasharray: var(--array-1, 26px) var(--array-2, 100px);
+                stroke-dashoffset: var(--offset, 126px);
+                transform: translateZ(0);
+                &:nth-child(2) {
+                    --duration: .7s;
+                    --easing: ease-in;
+                    --offset: 100px;
+                    --array-2: 74px;
                 }
-            }
-            &.active {
-                svg {
-                    path {
-                        --offset: 57px;
-                        &:nth-child(1),
-                        &:nth-child(3) {
-                            --delay: .15s;
-                            --easing: cubic-bezier(.2, .4, .2, 1.1);
-                        }
-                        &:nth-child(2) {
-                            --duration: .4s;
-                            --offset: 2px;
-                            --array-1: 1px;
-                        }
-                        &:nth-child(3) {
-                            --offset: 58px;
-                        }
-                    }
+                &:nth-child(3) {
+                    --offset: 133px;
+                    --array-2: 107px;
                 }
             }
         }
-    
-/* 顶栏默认状态，保持隐藏 */
-header {
-    visibility: hidden; /* 默认隐藏顶栏 */
-    background-color: #fff; /* 保证背景为白色 */
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 100vh;
-    display: flex;
-    flex-direction: column; /* 竖向排列 */
-    justify-content: center; /* 内容居中 */
-    align-items: center;
-    z-index: 100;
-    padding: 30px 0; /* 调整竖向排列的内边距 */
-    opacity: 0;  /* 初始透明度为0 */
-    transition: transform 0.5s ease, opacity 0.5s ease, visibility 0s 0.5s; /* 添加过渡效果 */
-}
-
-/* 顶栏显示时的样式 */
-.show-header header {
-    visibility: visible;  /* 顶栏可见 */
-    transform: translateY(0);  /* 顶栏显示 */
-    opacity: 1;  /* 顶栏完全可见 */
-    transition: transform 0.5s ease, opacity 0.5s ease, visibility 0s; /* 添加过渡效果 */
-}
-
-/* 保持 header-left 始终显示 */
-.header-left {
-    position: fixed;
-    top: 30px;  /* 距离顶部一定间距 */
-    left: 30px; /* 距离左侧一定间距 */
-    z-index: 200;  /* 确保社交图标在顶层，不会被其他内容遮挡 */
-    visibility: visible;  /* 保证始终可见 */
-    opacity: 1;  /* 保证始终可见 */
-}
-
-/* 其他社交图标、图片展示部分等的样式保持不变 */
-.social-icon {
-    position: fixed; /* 使用固定定位 */
-    bottom: 30px; /* 距离底部20px */
-    right: 30px;  /* 距离右侧20px */
-}
-
-.image-section {
-    height: 100vh;  /* 确保图片部分在移动端满屏显示 */
-}
-
-.header-right a {
-    display: block;
-    margin-bottom: 20px;  /* 每个链接竖着排列 */
-    text-align: center;
-} 
-
-
-    
-}
-
-
-
-/* 加载动画 */
-#loader {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.9);  /* 背景为黑色透明 */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 9999;
-    opacity: 0;
-    transition: opacity 0.3s ease-out;  /* 动画淡出效果 */
-}
-
-.loader-spinner {
-    width: 60px;
-    height: 60px;
-    border-radius: 50%;
-    background: linear-gradient(45deg, #3498db, #2ecc71);  /* 渐变背景 */
-    animation: pulse 1.5s infinite ease-in-out;  /* 缩放动画 */
-}
-
-/* 缩放效果 */
-@keyframes pulse {
-    0%, 100% {
-        transform: scale(0.8);
-        opacity: 0.7;
     }
-    50% {
-        transform: scale(1);
-        opacity: 1;
+
+    .menu-toggle.active {
+        svg {
+            path {
+                --offset: 57px;
+                &:nth-child(1),
+                &:nth-child(3) {
+                    --delay: .15s;
+                    --easing: cubic-bezier(.2, .4, .2, 1.1);
+                }
+                &:nth-child(2) {
+                    --duration: .4s;
+                    --offset: 2px;
+                    --array-1: 1px;
+                }
+                &:nth-child(3) {
+                    --offset: 58px;
+                }
+            }
+        }
+    }
+
+    /* 按钮点击后禁用滚动的样式 */
+    body.no-scroll {
+        overflow: hidden;
+    }
+
+    /* 顶栏默认状态，保持隐藏 */
+    header {
+        visibility: hidden; /* 默认隐藏顶栏 */
+        background-color: #fff; /* 保证背景为白色 */
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 100vh;
+        display: flex;
+        flex-direction: column; /* 竖向排列 */
+        justify-content: center; /* 内容居中 */
+        align-items: center;
+        z-index: 100;
+        padding: 30px 0; /* 调整竖向排列的内边距 */
+        opacity: 0;  /* 初始透明度为0 */
+        transition: transform 0.5s ease, opacity 0.5s ease, visibility 0s 0.5s; /* 添加过渡效果 */
+    }
+
+    /* 顶栏显示时的样式 */
+    .show-header header {
+        visibility: visible;  /* 顶栏可见 */
+        transform: translateY(0);  /* 顶栏显示 */
+        opacity: 1;  /* 顶栏完全可见 */
+        transition: transform 0.5s ease, opacity 0.5s ease, visibility 0s; /* 添加过渡效果 */
+    }
+
+    /* 保持 header-left 始终显示 */
+    .logo {
+        position: absolute;  /* 更改为 absolute */
+        top: 25px;  /* 距离顶部一定间距 */
+        left: 25px; /* 距离左侧一定间距 */
+        z-index: 200;  /* 确保社交图标在顶层，不会被其他内容遮挡 */
+    }
+
+    /* 其他社交图标、图片展示部分等的样式保持不变 */
+    .social-icon {
+        position: fixed; /* 使用固定定位 */
+        bottom: 30px; /* 距离底部20px */
+        right: 30px;  /* 距离右侧20px */
+    }
+
+    .image-section {
+        height: 100vh;  /* 确保图片部分在移动端满屏显示 */
+    }
+
+    /* 右侧内容 */
+    .header-right {
+        margin-left: 0; /* 禁用 margin-left: auto */
+    }
+
+    .header-right a {
+        display: block;
+        margin-bottom: 20px;  /* 每个链接竖着排列 */
+        text-align: center;
+    }
+
+    /* 加载动画 */
+    #loader {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.9);  /* 背景为黑色透明 */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 9999;
+        opacity: 0;
+        transition: opacity 0.3s ease-out;  /* 动画淡出效果 */
+    }
+
+    .loader-spinner {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        background: linear-gradient(45deg, #3498db, #2ecc71);  /* 渐变背景 */
+        animation: pulse 1.5s infinite ease-in-out;  /* 缩放动画 */
+    }
+
+    /* 缩放效果 */
+    @keyframes pulse {
+        0%, 100% {
+            transform: scale(0.8);
+            opacity: 0.7;
+        }
+        50% {
+            transform: scale(1);
+            opacity: 1;
+        }
     }
 }
+
+
