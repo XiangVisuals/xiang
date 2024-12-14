@@ -348,8 +348,8 @@ button:active {
     /* 其他社交图标、图片展示部分等的样式保持不变 */
     .social-icon {
         position: fixed; /* 使用固定定位 */
-        bottom: 30px; /* 距离底部20px */
-        right: 30px;  /* 距离右侧20px */
+        bottom: 10%; /* 距离底部10% */
+        right: 25px;  /* 距离右侧25px */
     }
 
     .image-section {
