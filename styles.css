@@ -114,6 +114,7 @@ header {
     display: flex;
     align-items: center;
     justify-content: center;
+    animation: zoom 8s infinite alternate ease-in-out; /* 添加放大动画 */
 }
 
 .image-container img {
@@ -124,6 +125,7 @@ header {
     opacity: 1;
     transition: opacity 1s ease-in-out;
     position: absolute;
+    animation: zoom 8s infinite alternate ease-in-out; /* 添加放大动画 */
 }
 
 .image-container img.hidden {
@@ -348,8 +350,8 @@ button:active {
     /* 其他社交图标、图片展示部分等的样式保持不变 */
     .social-icon {
         position: fixed; /* 使用固定定位 */
-        bottom: 10%; /* 距离底部10% */
-        right: 25px;  /* 距离右侧25px */
+        bottom: 10%; /* 距离底部20px */
+        right: 25px;  /* 距离右侧20px */
     }
 
     .image-section {
