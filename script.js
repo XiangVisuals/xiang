@@ -1,9 +1,67 @@
 let currentImageIndex = 0;
 
+// 动态创建并插入 @keyframes 动画规则
+function injectZoomKeyframes() {
+    const style = document.createElement('style');
+    style.type = 'text/css';
+
+    // 定义动画规则
+    const keyframes = `
+        @keyframes zoom {
+            0% {
+                transform: scale(1); /* 原始大小 */
+            }
+            100% {
+                transform: scale(1.05); /* 轻微放大 */
+            }
+        }
+        .zoom-animation {
+            animation: zoom 5s infinite alternate ease-in-out; /* 应用动画 */
+        }
+
+        /* 移动端图片旋转效果 */
+        @media screen and (max-width: 768px) {
+            .rotate-mobile {
+                transform: rotate(90deg) !important; /* 强制旋转90度 */
+                transition: transform 0.3s ease; /* 添加平滑过渡 */
+            }
+        }
+    `;
+
+    style.innerHTML = keyframes; // 设置动画规则
+    document.head.appendChild(style); // 插入到 <head>
+}
+
+// 应用背景缩放动画
+function applyZoomEffectToImages() {
+    const images = document.querySelectorAll('.image-container img'); // 获取所有图片
+    images.forEach(img => {
+        img.classList.add('zoom-animation'); // 添加动画类
+    });
+}
+
+// 为移动端添加图片旋转效果
+function applyRotationEffectOnMobile() {
+    const images = document.querySelectorAll('.image-container img'); // 获取所有图片
+    if (/Mobi|Android/i.test(navigator.userAgent)) {
+        // 为移动端设备上的图片添加旋转类
+        images.forEach(img => {
+            img.classList.add('rotate-mobile');
+        });
+    }
+}
+
+// 初始化缩放动画和旋转效果
+function initializeEffects() {
+    injectZoomKeyframes();
+    applyZoomEffectToImages();
+    applyRotationEffectOnMobile();
+}
+
 // 处理图片切换功能
 function changeImage(direction) {
-    const images = document.querySelectorAll('.image-container img');  // 获取所有图片
-    images[currentImageIndex].classList.add('hidden');  // 当前图片淡出
+    const images = document.querySelectorAll('.image-container img'); // 获取所有图片
+    images[currentImageIndex].classList.add('hidden'); // 当前图片淡出
 
     // 更新图片索引
     currentImageIndex += direction;
@@ -20,7 +78,7 @@ function changeImage(direction) {
 }
 
 // 监听滚动事件以处理动态效果
-document.addEventListener('scroll', function() {
+document.addEventListener('scroll', function () {
     const scrollPosition = window.scrollY;
 
     // 如果页面滚动超过一定距离，触发其他内容的显示
@@ -35,14 +93,17 @@ document.addEventListener('scroll', function() {
 });
 
 // 页面加载完成后隐藏加载动画
-window.addEventListener('load', function() {
+window.addEventListener('load', function () {
     const loader = document.getElementById('loader');
-    loader.style.opacity = '0';  // 逐渐淡出加载动画
+    loader.style.opacity = '0'; // 逐渐淡出加载动画
     setTimeout(() => {
-        loader.style.display = 'none';  // 隐藏加载动画
-    }, 300);  // 延时以确保动画效果完成
+        loader.style.display = 'none'; // 隐藏加载动画
+    }, 300); // 延时以确保动画效果完成
 
-    document.body.classList.add('loaded');  // 页面内容淡入
+    document.body.classList.add('loaded'); // 页面内容淡入
+
+    // 初始化缩放动画和旋转效果
+    initializeEffects();
 });
 
 // 获取光标元素
@@ -65,12 +126,12 @@ const clickableElements = document.querySelectorAll('button, a, img, .header-lef
 clickableElements.forEach((element) => {
     element.addEventListener('mouseenter', () => {
         cursor.style.transform = 'scale(2)';
-        cursor.style.width = '20px';  // 放大后的宽度
+        cursor.style.width = '20px'; // 放大后的宽度
         cursor.style.height = '20px'; // 放大后的高度
     });
     element.addEventListener('mouseleave', () => {
         cursor.style.transform = 'scale(1)';
-        cursor.style.width = '10px';  // 恢复光标宽度
+        cursor.style.width = '10px'; // 恢复光标宽度
         cursor.style.height = '10px'; // 恢复光标高度
     });
 });
@@ -79,14 +140,14 @@ clickableElements.forEach((element) => {
 const imageContainer = document.querySelector('.image-container');
 imageContainer.addEventListener('mouseenter', () => {
     cursor.style.transform = 'scale(1)';
-    cursor.style.width = '10px';  // 恢复默认光标大小
+    cursor.style.width = '10px'; // 恢复默认光标大小
     cursor.style.height = '10px';
 });
 
 // 判断设备类型并隐藏光标（移动设备）
 if (/Mobi|Android/i.test(navigator.userAgent)) {
     if (cursor) {
-        cursor.style.display = 'none';  // 在移动设备上隐藏光标
+        cursor.style.display = 'none'; // 在移动设备上隐藏光标
     }
 }
 
