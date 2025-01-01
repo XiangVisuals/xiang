@@ -20,6 +20,10 @@ body.loaded {
     opacity: 1;
 }
 
+/* 默认隐藏菜单按钮 */
+.menu-toggle {
+    display: none;
+}
 
 /* 自定义光标样式 */
 .cursor {
@@ -240,6 +244,7 @@ button:active {
     /* 显示一个切换按钮，位于右上角 */
     .menu-toggle {
         position: absolute;  /* 更改为 absolute */
+        display: block;
         top: 15px;
         right: 15px;
         --color: #ffffff;
