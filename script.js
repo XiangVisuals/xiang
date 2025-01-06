@@ -40,6 +40,25 @@ function applyZoomEffectToImages() {
     });
 }
 
+// 文字缓入效果
+document.addEventListener('DOMContentLoaded', () => {
+    const title = document.querySelector('.parallax__title');
+    const observer = new IntersectionObserver(
+        (entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    title.classList.add('visible');
+                } else {
+                    title.classList.remove('visible'); // 滚出视口时可选恢复效果
+                }
+            });
+        },
+        { threshold: 0.1 } // 当10%的元素进入视口时触发
+    );
+
+    observer.observe(title);
+});
+
 // 为移动端添加图片旋转效果
 function applyRotationEffectOnMobile() {
     const images = document.querySelectorAll('.image-container img'); // 获取所有图片
@@ -166,3 +185,5 @@ document.querySelectorAll('.menu-toggle').forEach(btn => {
         document.body.classList.toggle('no-scroll');
     });
 });
+
+
