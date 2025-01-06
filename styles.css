@@ -20,6 +20,32 @@ body.loaded {
     opacity: 1;
 }
 
+/* 首页文字 */
+.parallax__title {
+    pointer-events: auto;
+    text-align: center;
+    text-transform: none;
+    margin-top: 0;
+    margin-bottom: 0.1em;
+    margin-right: 0.075em;
+    font-family: PP Neue Corp Wide, sans-serif;
+    font-size: 11vw;
+    font-weight: 800;
+    line-height: 1;
+    position: relative;
+    color: rgb(0, 0, 0);
+    mix-blend-mode: difference;
+    filter: invert(1);
+    transition: transform 0.8s ease, opacity 0.8s ease; /* 添加平滑过渡效果 */
+    opacity: 0; /* 初始不可见 */
+    transform: translateY(10px); /* 初始下移 */
+}
+
+.parallax__title.visible {
+    opacity: 1; /* 滑动到时显示 */
+    transform: translateY(0); /* 恢复原位置 */
+}
+
 /* 默认隐藏菜单按钮 */
 .menu-toggle {
     display: none;
@@ -54,11 +80,10 @@ button:hover .cursor, a:hover .cursor, img:hover .cursor {
 /* 顶栏样式 */
 header {
     display: flex;
-    position: relative;
+    position: absolute;
     justify-content: space-between;
     align-items: center;
-    padding: 22px 180px;
-    background-color: #fff;
+    background-color: #ffffff00;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     transition: transform 0.3s ease-in-out;
 }
@@ -81,8 +106,9 @@ header {
     justify-content: space-between;
     position: absolute;
     z-index: 10;
-    left: 8%;
-    top: 1%; /* 或者设置一个合适的值 */
+    left: 10%;
+    top: 2%; /* 或者设置一个合适的值 */
+    mix-blend-mode: difference;  /* 反转光标下方区域的颜色 */
 }
 
 
@@ -139,9 +165,10 @@ header {
 /* 图片切换按钮 */
 button {
     position: absolute;
-    top: 50%;
+    top: 48%;
     background: none;  /* 去掉背景色 */
-    color: rgba(255, 255, 255, 0.801);
+    color: rgb(255, 255, 255);
+    mix-blend-mode: difference;  /* 反转光标下方区域的颜色 */
     font-size: 28px;
     border: none;
     width: 36px;
@@ -168,7 +195,7 @@ button:active {
 /* 内容部分 */
 .content-section {
     padding: 60px 300px;
-    background-color: #f5f5f5;
+    background-color: #ffffff;
     display: grid;
     grid-template-columns: repeat(2, 1fr);  /* 每行显示两张图片 */
     gap: 20px;  /* 图片之间的间距 */
