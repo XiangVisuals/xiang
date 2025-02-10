@@ -113,7 +113,7 @@ document.addEventListener('mousemove', (e) => {
 });
 
 // 鼠标悬浮在按钮、链接等元素时放大光标
-const clickableElements = document.querySelectorAll('button, a, img, .header-left, .logo');
+const clickableElements = document.querySelectorAll('a, img, .header-left, .header-title, .about-text h1, .about-text h2, .about-text p');
 
 // 确保只有这些元素会放大光标，避免 image-container 放大
 clickableElements.forEach((element) => {
