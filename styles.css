@@ -162,6 +162,8 @@ header {
     color: #333;
     margin-bottom: 15px;
 }
+
+
 /* 底部文字 */
 .about-footer {
     width: 58%; /* 让 h3 独占一行 */
@@ -516,6 +518,7 @@ button:active {
         width: 100%;
         transform: translateY(0);
         margin-top: 60px;
+        display: none;
     }
 
     /* 缩放效果 */
