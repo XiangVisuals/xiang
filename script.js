@@ -12,7 +12,7 @@ function injectZoomKeyframes() {
                 transform: scale(1); /* 原始大小 */
             }
             100% {
-                transform: scale(1.05); /* 轻微放大 */
+                transform: scale(1.005); /* 轻微放大 */
             }
         }
         .zoom-animation {
@@ -40,25 +40,6 @@ function applyZoomEffectToImages() {
     });
 }
 
-// 文字缓入效果
-document.addEventListener('DOMContentLoaded', () => {
-    const title = document.querySelector('.parallax__title');
-    const observer = new IntersectionObserver(
-        (entries) => {
-            entries.forEach((entry) => {
-                if (entry.isIntersecting) {
-                    title.classList.add('visible');
-                } else {
-                    title.classList.remove('visible'); // 滚出视口时可选恢复效果
-                }
-            });
-        },
-        { threshold: 0.1 } // 当10%的元素进入视口时触发
-    );
-
-    observer.observe(title);
-});
-
 // 为移动端添加图片旋转效果
 function applyRotationEffectOnMobile() {
     const images = document.querySelectorAll('.image-container img'); // 获取所有图片
@@ -77,24 +58,17 @@ function initializeEffects() {
     applyRotationEffectOnMobile();
 }
 
-// 处理图片切换功能
-function changeImage(direction) {
-    const images = document.querySelectorAll('.image-container img'); // 获取所有图片
-    images[currentImageIndex].classList.add('hidden'); // 当前图片淡出
+document.addEventListener("DOMContentLoaded", function () {
+    let images = document.querySelectorAll('.image-container img');
+    let randomIndex = Math.floor(Math.random() * images.length); // 生成随机索引
 
-    // 更新图片索引
-    currentImageIndex += direction;
+    // 隐藏所有图片
+    images.forEach(img => img.classList.add('hidden'));
 
-    // 确保索引循环
-    if (currentImageIndex >= images.length) {
-        currentImageIndex = 0;
-    } else if (currentImageIndex < 0) {
-        currentImageIndex = images.length - 1;
-    }
+    // 仅显示随机选中的图片
+    images[randomIndex].classList.remove('hidden');
+});
 
-    // 让下一个图片淡入
-    images[currentImageIndex].classList.remove('hidden');
-}
 
 // 监听滚动事件以处理动态效果
 document.addEventListener('scroll', function () {
@@ -185,5 +159,3 @@ document.querySelectorAll('.menu-toggle').forEach(btn => {
         document.body.classList.toggle('no-scroll');
     });
 });
-
-
