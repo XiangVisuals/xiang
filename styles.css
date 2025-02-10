@@ -510,8 +510,9 @@ button:active {
         font-size: 18px;
     }
 
-    .about-text p {
+    .about-text p:nth-of-type(n+2) {
         font-size: 13px;
+        display: none;
     }
 
     .about-footer {
