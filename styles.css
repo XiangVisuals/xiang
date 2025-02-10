@@ -1,5 +1,8 @@
 /* 引入 Google Fonts 中的 Playfair Display 字体 */
 @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400..900&family=Lakki+Reddy&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:wght@500&family=Source+Sans+Pro:wght@400&family=Noto+Serif+SC:wght@400&display=swap');
+
+
 /* 通用样式 */
 * {
     margin: 0;
@@ -60,7 +63,7 @@ header {
     top: 5%; /* 确保在页面的顶部 */
     left: 0; /* 确保对齐左侧 */
     right: 0; /* 确保对齐右侧 */
-    padding: 22px 180px;
+    padding: 22px 100px;
     background-color: rgba(255, 255, 255, 0); /* 透明背景 */
     transition: transform 0.3s ease-in-out;
     z-index: 999; /* 确保顶栏位于其他内容之上 */
@@ -84,6 +87,7 @@ header {
     white-space: nowrap; /* 防止文字换行 */
     pointer-events: auto; /* 允许用户与标题互动 */
     transition: color 0.3s ease; /* 添加平滑过渡效果 */
+    z-index: 999; /* 确保顶栏位于其他内容之上 */
 }
 
 
@@ -104,6 +108,86 @@ header {
 
 .header-right a:hover {
     text-decoration: underline;
+}
+
+/* 个人介绍部分 */
+.about-section {
+    display: flex;
+    flex-direction: column; /* 让子元素垂直排列 */
+    align-items: center; /* 让内容居中 */
+    justify-content: flex-start;
+    height: 100vh;
+    padding: 100px 10%;
+    background-color: #ffffff;
+    text-align: left;
+}
+
+.about-container {
+    display: flex;
+    align-items: flex-start; /* 让文字与图片顶部对齐 */
+    max-width: 1200px;
+}
+
+
+.about-image {
+    width: 50%;
+    height: 100%;
+    object-fit: cover;
+    margin-right: 30px;
+}
+
+.about-text h1 {
+    font-family: 'Cinzel', serif;
+    font-size: 48px;
+    font-weight: normal;
+    letter-spacing: 2px;
+    margin-bottom: 10px;
+}
+
+.about-text h2 {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 22px;
+    font-weight: 500;
+    color: #666666;
+    margin-bottom: 20px;
+}
+
+
+.about-text p {
+    font-family: 'Source Sans Pro', sans-serif;
+    font-size: 14px;
+    line-height: 1.8;
+    color: #333;
+    margin-bottom: 15px;
+}
+/* 底部文字 */
+.about-footer {
+    width: 58%; /* 让 h3 独占一行 */
+    text-align: center; /* 让 h3 居中 */
+    margin-top: 120px; /* 调整间距 */
+    transform: translateY(-80px); /* 向上移动 10px */
+}
+
+.about-footer h3 {
+    font-family: 'Source Sans Pro', sans-serif;
+    font-size: 14px;
+    line-height: 1.8;
+    color: #666666;
+    margin-bottom: 15px;
+}
+
+/* 视频展示部分 */
+.video-section {
+    position: relative; /* 确保它正常排列，而不是覆盖 */
+    width: 100%;
+    height: 100vh;
+    background: black;
+}
+
+.video-section video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 
 /* 图片展示部分 */
@@ -172,7 +256,7 @@ button:active {
 /* 内容部分 */
 .content-section {
     padding: 60px 300px;
-    background-color: #f5f5f5;
+    background-color: #ffffff;
     display: grid;
     grid-template-columns: repeat(2, 1fr);  /* 每行显示两张图片 */
     gap: 20px;  /* 图片之间的间距 */
@@ -396,6 +480,42 @@ button:active {
         animation: pulse 1.5s infinite ease-in-out;  /* 缩放动画 */
     }
 
+    /* 介绍部分 */
+    .about-container {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .about-image {
+        width: 100%;
+        height: auto;
+        margin-right: 0;
+        margin-bottom: 20px;
+    }
+
+    .about-text {
+        width: 100%;
+    }
+
+    .about-text h1 {
+        font-size: 36px;
+    }
+
+    .about-text h2 {
+        font-size: 18px;
+    }
+
+    .about-text p {
+        font-size: 13px;
+    }
+
+    .about-footer {
+        width: 100%;
+        transform: translateY(0);
+        margin-top: 60px;
+    }
+
     /* 缩放效果 */
     @keyframes pulse {
         0%, 100% {
@@ -410,3 +530,17 @@ button:active {
 }
 
 
+/* 隐藏滚动条*/
+::-webkit-scrollbar {
+    display: none;
+}
+
+/* 针对 Firefox */
+html {
+    scrollbar-width: none;
+}
+
+/* 针对 Edge 和 IE */
+body {
+    -ms-overflow-style: none;
+}
