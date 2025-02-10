@@ -1,7 +1,7 @@
 /* 引入 Google Fonts 中的 Playfair Display 字体 */
 @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400..900&family=Lakki+Reddy&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:wght@500&family=Source+Sans+Pro:wght@400&family=Noto+Serif+SC:wght@400&display=swap');
-
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400..900&family=Lakki+Reddy&family=ZCOOL+QingKe+HuangYou&display=swap');
 
 /* 通用样式 */
 * {
@@ -137,12 +137,14 @@ header {
 }
 
 .about-text h1 {
-    font-family: 'Cinzel', serif;
+    font-family: "ZCOOL QingKe HuangYou", sans-serif;
+    font-style: normal;
     font-size: 48px;
     font-weight: normal;
     letter-spacing: 2px;
     margin-bottom: 10px;
 }
+
 
 .about-text h2 {
     font-family: 'Montserrat', sans-serif;
