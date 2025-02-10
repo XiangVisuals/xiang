@@ -166,7 +166,7 @@ header {
 
 /* 底部文字 */
 .about-footer {
-    width: 58%; /* 让 h3 独占一行 */
+    width: 1200px; /* 让 h3 独占一行 */
     text-align: center; /* 让 h3 居中 */
     margin-top: 120px; /* 调整间距 */
     transform: translateY(-80px); /* 向上移动 10px */
