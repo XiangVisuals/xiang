@@ -113,38 +113,33 @@ header {
 /* 个人介绍部分 */
 .about-section {
     display: flex;
-    flex-direction: column; /* 让子元素垂直排列 */
-    align-items: center; /* 让内容居中 */
+    flex-direction: column;
+    align-items: center;
     justify-content: flex-start;
-    height: 100vh;
     padding: 100px 10%;
     background-color: #ffffff;
     text-align: left;
 }
 
 .about-container {
-    display: flex;
-    align-items: flex-start; /* 让文字与图片顶部对齐 */
     max-width: 1200px;
+    text-align: justify;
 }
 
-
+/* 关键：让图片浮动，并让文字围绕 */
 .about-image {
+    float: left;  /* 关键：让图片浮动 */
     width: 50%;
-    height: 100%;
-    object-fit: cover;
-    margin-right: 30px;
+    margin: 0 20px 10px 0;
+    shape-outside: margin-box;
+    border-radius: 10px;
 }
 
 .about-text h1 {
     font-family: "ZCOOL QingKe HuangYou", sans-serif;
-    font-style: normal;
     font-size: 48px;
-    font-weight: normal;
-    letter-spacing: 2px;
     margin-bottom: 10px;
 }
-
 
 .about-text h2 {
     font-family: 'Montserrat', sans-serif;
@@ -154,7 +149,6 @@ header {
     margin-bottom: 20px;
 }
 
-
 .about-text p {
     font-family: 'Source Sans Pro', sans-serif;
     font-size: 14px;
@@ -163,22 +157,35 @@ header {
     margin-bottom: 15px;
 }
 
+/* 关键：清除浮动，确保容器高度随文字动态调整 */
+.clearfix::after {
+    content: "";
+    display: block;
+    clear: both;
+}
+
 
 /* 底部文字 */
 .about-footer {
-    width: 1200px; /* 让 h3 独占一行 */
+    max-width: 100%; /* 让 footer 宽度自适应 */
     text-align: center; /* 让 h3 居中 */
-    margin-top: 120px; /* 调整间距 */
-    transform: translateY(-80px); /* 向上移动 10px */
+    margin-top: 50px; /* 调整间距 */
+    padding-top: 20px;
+    padding: 50px 15%;
+    clear: both; /* 关键：清除浮动，避免错位 */
+    transform: translateY(-30px); /* 向上移动 10px */
 }
 
 .about-footer h3 {
-    font-family: 'Source Sans Pro', sans-serif;
+    font-family: "ZCOOL QingKe HuangYou", sans-serif;
     font-size: 14px;
+    font-weight: 300;
     line-height: 1.8;
     color: #666666;
     margin-bottom: 15px;
 }
+
+
 
 /* 视频展示部分 */
 .video-section {
