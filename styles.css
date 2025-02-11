@@ -225,34 +225,7 @@ header {
     opacity: 0;
 }
 
-/* 图片切换按钮 */
-button {
-    position: absolute;
-    top: 50%;
-    background: none;  /* 去掉背景色 */
-    color: rgba(255, 255, 255, 0.801);
-    font-size: 28px;
-    border: none;
-    width: 36px;
-    height: 36px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: transform 0.2s ease; /* 轻微的缩放效果 */
-}
 
-button:active {
-    transform: scale(0.9); /* 点击时稍微缩小 */
-}
-
-.prev-button {
-    left: 20px;
-}
-
-.next-button {
-    right: 20px;
-}
 
 /* 内容部分 */
 .content-section {
