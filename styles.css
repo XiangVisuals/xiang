@@ -150,6 +150,15 @@ header {
     margin-bottom: 20px;
 }
 
+.about-text h3 {
+    font-family: "ZCOOL QingKe HuangYou", sans-serif;
+    text-align: center; /* 让 h3 居中 */
+    font-size: 14px;
+    font-weight: 500;
+    color: #00000080;
+    margin-bottom: 20px;
+}
+
 .about-text p {
     font-family: 'Source Sans Pro', sans-serif;
     font-size: 14px;
@@ -165,26 +174,6 @@ header {
     clear: both;
 }
 
-
-/* 底部文字 */
-.about-footer {
-    max-width: 100%; /* 让 footer 宽度自适应 */
-    text-align: center; /* 让 h3 居中 */
-    margin-top: 50px; /* 调整间距 */
-    padding-top: 20px;
-    padding: 50px 15%;
-    clear: both; /* 关键：清除浮动，避免错位 */
-    transform: translateY(-30px); /* 向上移动 10px */
-}
-
-.about-footer h3 {
-    font-family: "ZCOOL QingKe HuangYou", sans-serif;
-    font-size: 14px;
-    font-weight: 300;
-    line-height: 1.8;
-    color: #666666;
-    margin-bottom: 15px;
-}
 
 
 
@@ -565,17 +554,15 @@ button:active {
         font-size: 18px;
     }
 
+    .about-text h3 {
+        display: none;
+    }
+
     .about-text p:nth-of-type(n+2) {
         font-size: 13px;
         display: none;
     }
 
-    .about-footer {
-        width: 100%;
-        transform: translateY(0);
-        margin-top: 60px;
-        display: none;
-    }
 
     /* 缩放效果 */
     @keyframes pulse {
