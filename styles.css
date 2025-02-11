@@ -449,6 +449,7 @@ button:active {
         top: 25px;  /* 距离顶部一定间距 */
         left: 25px; /* 距离左侧一定间距 */
         z-index: 200;  /* 确保社交图标在顶层，不会被其他内容遮挡 */
+        mix-blend-mode: difference;  /* 反转光标下方区域的颜色 */
     }
 
 
