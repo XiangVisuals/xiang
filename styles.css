@@ -88,6 +88,7 @@ header {
     pointer-events: auto; /* 允许用户与标题互动 */
     transition: color 0.3s ease; /* 添加平滑过渡效果 */
     z-index: 999; /* 确保顶栏位于其他内容之上 */
+    
 }
 
 
@@ -302,6 +303,52 @@ button:active {
 }
 
 
+  /* 底栏 */
+  .site-footer {
+    background: #ffffff;
+    padding: 40px 0;
+    border-top: 1px solid #00000015;
+    font-family: 'Segoe UI', Arial, sans-serif;
+  }
+  
+  .footer-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 0 20px;
+  }
+  
+  .footer-logo {
+    width: 40px; /* 适当调整 logo 大小 */
+    height: auto;
+  }
+  
+  .copyright {
+    color: #7a7a7a;
+    font-size: 14px;
+    margin-top: 15px;
+  }
+  
+  .footer-nav {
+    display: flex;
+    gap: 30px;
+    margin-bottom: 20px;
+  }
+  
+  .nav-link {
+    color: #666;
+    text-decoration: none;
+    font-size: 15px;
+    transition: color 0.3s ease;
+  }
+  
+  .nav-link:hover {
+    color: #000; /* 黑色文字 */
+    text-decoration: underline;
+  }
+  
 /* 移动端适配 */
 @media (max-width: 768px) {
     .cursor {
@@ -415,7 +462,7 @@ button:active {
     body.no-scroll {
         overflow: hidden;
     }
-
+    
     /* 顶栏默认状态，保持隐藏 */
     header {
         visibility: hidden; /* 默认隐藏顶栏 */
@@ -541,6 +588,21 @@ button:active {
             opacity: 1;
         }
     }
+    /* 底栏 */
+    .footer-container {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+      }
+    
+      .footer-right {
+        margin-top: 25px;
+      }
+    
+      .footer-nav {
+        flex-direction: column;
+        gap: 15px;
+      }
 }
 
 
