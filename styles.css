@@ -121,6 +121,7 @@ header {
     background-color: #ffffff;
     text-align: left;
     height: 100vh; /* 高度为整个页面 */
+    box-sizing: border-box; /* 包含内边距和边框 */
 }
 
 
