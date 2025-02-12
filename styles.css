@@ -116,11 +116,13 @@ header {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: flex-start;
+    justify-content: center; /* 垂直居中 */
     padding: 100px 10%;
     background-color: #ffffff;
     text-align: left;
+    height: 100vh; /* 高度为整个页面 */
 }
+
 
 .about-container {
     max-width: 1200px;
