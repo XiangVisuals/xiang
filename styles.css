@@ -120,7 +120,7 @@ header {
     padding: 100px 10%;
     background-color: #ffffff;
     text-align: left;
-    height: 100vh; /* 高度为整个页面 */
+    min-height: 100vh; /* 最小高度为整个页面 */
     box-sizing: border-box; /* 包含内边距和边框 */
 }
 
