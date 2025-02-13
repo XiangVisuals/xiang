@@ -111,6 +111,40 @@ header {
     text-decoration: underline;
 }
 
+/* 图片展示部分 */
+.image-section {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.image-container {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: zoom 8s infinite alternate ease-in-out; /* 添加放大动画 */
+}
+
+.image-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    opacity: 1;
+    transition: opacity 1s ease-in-out;
+    position: absolute;
+    animation: zoom 8s infinite alternate ease-in-out; /* 添加放大动画 */
+}
+
+.image-container img.hidden {
+    opacity: 0;
+}
+
 /* 个人介绍部分 */
 .about-section {
     display: flex;
@@ -194,45 +228,13 @@ header {
     object-fit: cover;
 }
 
-/* 图片展示部分 */
-.image-section {
-    position: relative;
-    width: 100%;
-    height: 100vh;
-    overflow: hidden;
-}
 
-.image-container {
-    position: absolute;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    animation: zoom 8s infinite alternate ease-in-out; /* 添加放大动画 */
-}
-
-.image-container img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-    opacity: 1;
-    transition: opacity 1s ease-in-out;
-    position: absolute;
-    animation: zoom 8s infinite alternate ease-in-out; /* 添加放大动画 */
-}
-
-.image-container img.hidden {
-    opacity: 0;
-}
 
 
 
 /* 内容部分 */
 .content-section {
-    padding: 60px 300px;
+    padding: 60px 10%;
     background-color: #ffffff;
     display: grid;
     grid-template-columns: repeat(2, 1fr);  /* 每行显示两张图片 */
@@ -240,32 +242,17 @@ header {
     justify-items: center;  /* 居中对齐图片 */
 }
 
-.content-item {
-    display: flex;
-    flex-direction: column;
-    align-items: center;  /* 使图片和文字居中 */
-    text-align: center;
-}
 
 .content-image {
     width: 100%;
     height: auto;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);  /* 阴影效果 */
     transition: transform 0.3s ease, box-shadow 0.3s ease;  /* 平滑的过渡效果 */
 }
 
 .content-image:hover {
-    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.45);  /* 悬停时阴影效果加深 */
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);  /* 悬停时阴影效果加深 */
 }
 
-.content-description {
-    margin-top: 10px;  /* 图片和文字之间的间距 */
-    font-size: 14px;  /* 文字大小 */
-    color: #777;  /* 浅灰色文字 */
-    font-family: 'Arial', sans-serif;  /* 字体 */
-    line-height: 1.5;  /* 行间距 */
-    max-width: 80%;  /* 控制文字最大宽度 */
-}
 
 
   /* 底栏 */
@@ -316,25 +303,12 @@ header {
   
 /* 移动端适配 */
 @media (max-width: 768px) {
+    /* 鼠标 */    
     .cursor {
         display: none;  /* 移动端设备隐藏自定义光标 */
     }
 
-    .content-section {
-        padding: 40px 10px;  /* 减小上下左右的间距 */
-        grid-template-columns: 1fr;  /* 每行显示一张图片 */
-    }
-
-    .content-description {
-        font-size: 12px;  /* 更小的文字 */
-        line-height: 1.4;  /* 更紧凑的行间距 */
-        max-width: 100%;  /* 文字区域占满宽度 */
-    }
-
-    .content-image {
-        max-width: 90%;  /* 更严格限制图片最大宽度 */
-    }
-
+    /* 首页背景 */
     .image-container {
         width: 100vw;  /* 容器宽度为视口宽度 */
         height: 100vh; /* 容器高度为视口高度 */
@@ -540,17 +514,14 @@ header {
     }
 
 
-    /* 缩放效果 */
-    @keyframes pulse {
-        0%, 100% {
-            transform: scale(0.8);
-            opacity: 0.7;
-        }
-        50% {
-            transform: scale(1);
-            opacity: 1;
-        }
+
+    /* 底部图片展示 */
+    .content-section {
+        padding: 5px;  /* 上下左右的间距一致 */
+        grid-template-columns: 1fr;  /* 每行显示一张图片 */
+        gap: 1px;  /* 图片之间的间距 */
     }
+
     /* 底栏 */
     .footer-container {
         flex-direction: column;
@@ -566,6 +537,18 @@ header {
         flex-direction: column;
         gap: 15px;
       }
+
+    /* 缩放效果 */
+    @keyframes pulse {
+        0%, 100% {
+            transform: scale(0.8);
+            opacity: 0.7;
+        }
+        50% {
+            transform: scale(1);
+            opacity: 1;
+        }
+    }      
 }
 
 
