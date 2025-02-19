@@ -1,7 +1,7 @@
 # XIANG
 
 
-![描述](https://cllli.oss-cn-beijing.aliyuncs.com/img/pc.png)
+![描述](https://cllli.oss-cn-beijing.aliyuncs.com/img/GitHub-01.png)
 
 ## Table of Contents / 目录
 
