@@ -2,7 +2,6 @@
 
 
 ![描述](https://cllli.oss-cn-beijing.aliyuncs.com/img/pc.png)
-![描述](https://cllli.oss-cn-beijing.aliyuncs.com/img/phone.png)
 
 ## Table of Contents / 目录
 
@@ -22,6 +21,7 @@
 - **Video Section / 视频部分**: An autoplaying, looping, muted video. 自动播放、循环、静音的视频。
 - **Content Section / 内容部分**: Additional images displayed in a grid. 网格显示的附加图片。
 - **Footer / 页脚**: Contains a logo, copyright information, and navigation links. 包含徽标、版权信息和导航链接。
+![描述](https://cllli.oss-cn-beijing.aliyuncs.com/img/phone.png)
 
 ## Technologies Used / 使用技术
 
