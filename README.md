@@ -1,8 +1,5 @@
-# XIANG Website / XIANG 网站
+# XIANG
 
-This is the source code for the personal website of Xiang, a photographer, 3D artist, and technology enthusiast. The website showcases Xiang's work, including photography, 3D models, and personal introductions.
-
-这是Xiang个人网站的源代码，Xiang是一名摄影师、3D艺术家和技术爱好者。该网站展示了Xiang的作品，包括摄影、3D模型和个人介绍。
 
 ![描述](https://cllli.oss-cn-beijing.aliyuncs.com/img/pc.png)
 ![描述](https://cllli.oss-cn-beijing.aliyuncs.com/img/phone.png)
