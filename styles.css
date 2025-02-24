@@ -228,7 +228,17 @@ header {
     object-fit: cover;
 }
 
-
+/* 文字水印 */
+.video-section .watermark {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    color: rgba(255, 255, 255, 0.329);
+    font-size: 14px;
+    opacity: 0.7;
+    pointer-events: none; /* 禁止鼠标事件 */
+    z-index: 1000; /* 确保水印位于顶层 */
+}
 
 
 
