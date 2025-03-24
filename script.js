@@ -60,13 +60,25 @@ function initializeEffects() {
 
 document.addEventListener("DOMContentLoaded", function () {
     let images = document.querySelectorAll('.image-container img');
-    let randomIndex = Math.floor(Math.random() * images.length); // 生成随机索引
+    let currentIndex = Math.floor(Math.random() * images.length); // 生成随机索引
 
     // 隐藏所有图片
     images.forEach(img => img.classList.add('hidden'));
 
     // 仅显示随机选中的图片
-    images[randomIndex].classList.remove('hidden');
+    images[currentIndex].classList.remove('hidden');
+
+    // 每隔15秒切换背景图片
+    setInterval(() => {
+        // 隐藏当前图片
+        images[currentIndex].classList.add('hidden');
+
+        // 更新索引到下一张图片
+        currentIndex = (currentIndex + 1) % images.length;
+
+        // 显示下一张图片
+        images[currentIndex].classList.remove('hidden');
+    }, 20000); // 20秒
 });
 
 
