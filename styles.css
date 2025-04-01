@@ -218,7 +218,7 @@ header {
 .video-section {
     position: relative; /* 确保它正常排列，而不是覆盖 */
     width: 100%;
-    background: black;
+    background: rgb(255, 255, 255);
 }
 
 .video-section video {
