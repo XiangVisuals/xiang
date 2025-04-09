@@ -242,26 +242,87 @@ header {
 
 
 /* 内容部分 */
-.content-section {
-    padding: 60px 10%;
-    background-color: #ffffff;
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);  /* 每行显示两张图片 */
-    gap: 20px;  /* 图片之间的间距 */
-    justify-items: center;  /* 居中对齐图片 */
+::-moz-selection {
+    background: #ff0808;
+    color: white;
+}
+
+::selection {
+    background: #ff0808;
+    color: white;
 }
 
 
-.content-image {
+img {
     width: 100%;
     height: auto;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;  /* 平滑的过渡效果 */
+  }
+
+ul {
+  padding-left: 1rem;
+  list-style: none;
 }
 
-.content-image:hover {
-    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);  /* 悬停时阴影效果加深 */
+li {
+    flex-shrink: 0;
+    width: clamp(500px, 60vw, 800px);
+    padding-right: 1rem;
 }
 
+.df {
+    display: flex;
+}
+
+.aic {
+    align-items: center;
+}
+  
+.jcc {
+    justify-content: center;
+}
+
+  
+  .wrapper {
+    display: flex;
+  }
+  
+  .sample-gallery:not(.last) {
+    padding-bottom: 1rem;
+  }
+  
+  .sample-text .text {
+    font-size: clamp(5rem, 5vw, 8rem);
+    line-height: 1;
+    font-weight: 900;
+  }
+  
+  ::-webkit-scrollbar {
+    display: none;
+  }
+
+
+.sample-wrapper, .sample-gallery {
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    background-color: rgb(255, 255, 255);
+}
+
+.sample-gallery img {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+.sample-gallery {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+}
 
 
   /* 底栏 */
@@ -312,6 +373,7 @@ header {
   
 /* 移动端适配 */
 @media (max-width: 768px) {
+
     /* 鼠标 */    
     .cursor {
         display: none;  /* 移动端设备隐藏自定义光标 */
@@ -524,12 +586,20 @@ header {
 
 
 
-    /* 底部图片展示 */
-    .content-section {
-        padding: 5px;  /* 上下左右的间距一致 */
-        grid-template-columns: 1fr;  /* 每行显示一张图片 */
-        gap: 1px;  /* 图片之间的间距 */
+    /* 内容部分 */
+    li {
+        width: 100%;
+        padding-right: 1rem;
     }
+
+    .sample-text .text {
+        font-size: clamp(1.5rem, 5vw, 5rem);
+    }
+
+    .sample-gallery {
+        flex-direction: column;
+        gap: 0.5rem;
+    }    
 
     /* 底栏 */
     .footer-container {
@@ -557,7 +627,8 @@ header {
             transform: scale(1);
             opacity: 1;
         }
-    }      
+    } 
+ 
 }
 
 
