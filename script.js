@@ -81,13 +81,17 @@ document.addEventListener("DOMContentLoaded", function () {
     }, 20000); // 20秒
 });
 
-
 // 监听滚动事件以处理动态效果
 document.addEventListener('scroll', function () {
     const scrollPosition = window.scrollY;
 
-    // 如果页面滚动超过一定距离，触发其他内容的显示
+    // 获取 content-section 元素
     const contentSection = document.querySelector('.content-section');
+
+    // 如果找不到 content-section 元素，就直接返回，不执行后续代码
+    if (!contentSection) return;
+
+    // 如果页面滚动超过一定距离，触发其他内容的显示
     if (scrollPosition > 0) {
         contentSection.style.opacity = 1;
         contentSection.style.transform = 'translateY(0)';
@@ -96,6 +100,7 @@ document.addEventListener('scroll', function () {
         contentSection.style.transform = 'translateY(50px)';
     }
 });
+
 
 // 页面加载完成后隐藏加载动画
 window.addEventListener('load', function () {
@@ -125,7 +130,7 @@ document.addEventListener('mousemove', (e) => {
 });
 
 // 鼠标悬浮在按钮、链接等元素时放大光标
-const clickableElements = document.querySelectorAll('a, img, .header-left, .header-title, .about-text h1, .about-text h2, .about-text p');
+const clickableElements = document.querySelectorAll('a, img, .header-left, .header-title, .about-text h1, .about-text h2, .about-text p, .sample-text');
 
 // 确保只有这些元素会放大光标，避免 image-container 放大
 clickableElements.forEach((element) => {
@@ -171,3 +176,59 @@ document.querySelectorAll('.menu-toggle').forEach(btn => {
         document.body.classList.toggle('no-scroll');
     });
 });
+
+// 在原有代码底部添加
+gsap.registerPlugin(ScrollTrigger);
+
+// Removed duplicate declaration of initHorizontalScroll
+
+// 在load事件监听器中添加
+window.addEventListener('load', function() {
+  // ...原有代码...
+  
+  // 初始化横向滚动
+  if (typeof gsap !== 'undefined') {
+    imagesLoaded(document.querySelectorAll('img'), initHorizontalScroll);
+  }
+});
+
+gsap.registerPlugin(ScrollTrigger);
+
+const initHorizontalScroll = () => {
+  // 遍历每个section
+  gsap.utils.toArray('section').forEach((section, index) => {
+    // 获取每个section中的wrapper元素
+    const wrapper = section.querySelector('.wrapper');
+    
+    // 如果没有找到wrapper元素，则跳过该section
+    if (!wrapper) return; 
+
+    // 根据index来决定动画的起始位置和结束位置
+    const [xStart, xEnd] = index % 2 ? 
+      ['100%', (wrapper.scrollWidth - section.offsetWidth) * -1] : 
+      [wrapper.scrollWidth * -1, 0];
+
+    // 使用GSAP创建动画
+    gsap.fromTo(wrapper, 
+      { x: xStart },
+      {
+        x: xEnd,
+        scrollTrigger: {
+          trigger: section,
+          scrub: 0.5,
+          invalidateOnRefresh: true, // 优化移动端重排
+        }
+      }
+    );
+  });
+};
+
+// 等待页面加载完成后执行
+window.addEventListener('load', function() {
+  // 确保GSAP和imagesLoaded插件都已加载
+  if (typeof gsap !== 'undefined') {
+    // 使用imagesLoaded确保所有图片加载完成后再初始化滚动效果
+    imagesLoaded(document.querySelectorAll('img'), initHorizontalScroll);
+  }
+});
+
