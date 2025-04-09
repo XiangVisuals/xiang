@@ -281,7 +281,6 @@ li {
     justify-content: center;
 }
 
-  
   .wrapper {
     display: flex;
   }
@@ -600,7 +599,10 @@ li {
         flex-direction: column;
         gap: 0.5rem;
     }    
-
+    .sample-wrapper {
+        overflow-x: hidden;
+      }
+      
     /* 底栏 */
     .footer-container {
         flex-direction: column;
