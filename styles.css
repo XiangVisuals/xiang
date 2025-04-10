@@ -1,7 +1,5 @@
 /* 引入 Google Fonts 中的 Playfair Display 字体 */
-@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400..900&family=Lakki+Reddy&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:wght@500&family=Source+Sans+Pro:wght@400&family=Noto+Serif+SC:wght@400&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400..900&family=Lakki+Reddy&family=ZCOOL+QingKe+HuangYou&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400..900&family=Lakki+Reddy&family=Bebas+Neue&family=Montserrat:wght@500&family=Source+Sans+Pro:wght@400&family=Noto+Serif+SC:wght@400&family=ZCOOL+QingKe+HuangYou&display=swap');
 
 /* 通用样式 */
 * {
@@ -69,9 +67,6 @@ header {
     z-index: 999; /* 确保顶栏位于其他内容之上 */
 }
 
-
-
-
 .header-title {
     position: fixed; /* 固定在页面顶部 */
     position: absolute; /* 页面滚动随之滚动 */
@@ -88,9 +83,7 @@ header {
     pointer-events: auto; /* 允许用户与标题互动 */
     transition: color 0.3s ease; /* 添加平滑过渡效果 */
     z-index: 999; /* 确保顶栏位于其他内容之上 */
-    
 }
-
 
 /* 右侧内容 */
 .header-right {
@@ -139,6 +132,7 @@ header {
     transition: opacity 1s ease-in-out;
     position: absolute;
     animation: zoom 8s infinite alternate ease-in-out; /* 添加放大动画 */
+    loading: lazy; /* 启用图片懒加载 */
 }
 
 .image-container img.hidden {
@@ -158,7 +152,6 @@ header {
     box-sizing: border-box; /* 包含内边距和边框 */
 }
 
-
 .about-container {
     max-width: 1200px;
     text-align: justify;
@@ -171,6 +164,7 @@ header {
     margin: 0 20px 10px 0;
     shape-outside: margin-box;
     border-radius: 10px;
+    loading: lazy; /* 启用图片懒加载 */
 }
 
 .about-text h1 {
@@ -211,9 +205,6 @@ header {
     clear: both;
 }
 
-
-
-
 /* 视频展示部分 */
 .video-section {
     position: relative; /* 确保它正常排列，而不是覆盖 */
@@ -225,6 +216,13 @@ header {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    filter: grayscale(100%); /* 默认黑白 */
+    transition: filter 0.8s ease; /* 添加过渡效果 */
+    loading: lazy; /* 启用视频懒加载 */
+}
+
+.video-section video:hover {
+    filter: grayscale(0%); /* 鼠标悬浮时变为彩色 */
 }
 
 /* 文字水印 */
@@ -239,8 +237,6 @@ header {
     z-index: 1000; /* 确保水印位于顶层 */
 }
 
-
-
 /* 内容部分 */
 ::-moz-selection {
     background: #ff0808;
@@ -252,15 +248,15 @@ header {
     color: white;
 }
 
-
 img {
     width: 100%;
     height: auto;
-  }
+    loading: lazy; /* 启用图片懒加载 */
+}
 
 ul {
-  padding-left: 1rem;
-  list-style: none;
+    padding-left: 1rem;
+    list-style: none;
 }
 
 li {
@@ -276,29 +272,28 @@ li {
 .aic {
     align-items: center;
 }
-  
+
 .jcc {
     justify-content: center;
 }
 
-  .wrapper {
+.wrapper {
     display: flex;
-  }
-  
-  .sample-gallery:not(.last) {
+}
+
+.sample-gallery:not(.last) {
     padding-bottom: 1rem;
-  }
-  
-  .sample-text .text {
+}
+
+.sample-text .text {
     font-size: clamp(5rem, 5vw, 8rem);
     line-height: 1;
     font-weight: 900;
-  }
-  
-  ::-webkit-scrollbar {
-    display: none;
-  }
+}
 
+::-webkit-scrollbar {
+    display: none;
+}
 
 .sample-wrapper, .sample-gallery {
     width: 100%;
@@ -312,8 +307,8 @@ li {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    loading: lazy; /* 启用图片懒加载 */
 }
-
 
 .sample-gallery {
     display: flex;
@@ -323,52 +318,51 @@ li {
     gap: 1rem;
 }
 
-
-  /* 底栏 */
-  .site-footer {
+/* 底栏 */
+.site-footer {
     background: #fafafa;
     padding: 40px 0;
     border-top: 1px solid #00000015;
     font-family: 'Segoe UI', Arial, sans-serif;
-  }
-  
-  .footer-container {
+}
+
+.footer-container {
     max-width: 1200px;
     margin: 0 auto;
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
     padding: 0 20px;
-  }
-  
-  .footer-logo {
+}
+
+.footer-logo {
     width: 40px; /* 适当调整 logo 大小 */
     height: auto;
-  }
-  
-  .copyright {
+}
+
+.copyright {
     color: #7a7a7a;
     font-size: 14px;
     margin-top: 15px;
-  }
-  
-  .footer-nav {
+}
+
+.footer-nav {
     display: flex;
     gap: 30px;
     margin-bottom: 20px;
-  }
-  
-  .nav-link {
+}
+
+.nav-link {
     color: #666;
     text-decoration: none;
     font-size: 15px;
     transition: color 0.3s ease;
-  }
-  
-  .nav-link:hover {
+}
+
+.nav-link:hover {
     color: #000; /* 黑色文字 */
     text-decoration: underline;
-  }
+}
   
 /* 移动端适配 */
 @media (max-width: 768px) {
