@@ -232,3 +232,61 @@ window.addEventListener('load', function() {
   }
 });
 
+// 改进版按需加载方案（同时支持移动/PC）
+function loadScriptsWhenNeeded() {
+    // 移除事件监听避免重复执行
+    window.removeEventListener('scroll', loadScriptsWhenNeeded);
+    window.removeEventListener('touchmove', loadScriptsWhenNeeded);
+  
+    const scripts = [
+      'https://cdn.jsdelivr.net/npm/imagesloaded@5/imagesloaded.pkgd.min.js',
+      'https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js',
+      'https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js'
+    ];
+  
+    // 创建加载队列
+    const loadQueue = scripts.map(src => {
+      return new Promise((resolve, reject) => {
+        if(document.querySelector(`script[src="${src}"]`)) return resolve();
+        
+        const script = document.createElement('script');
+        script.src = src;
+        script.async = true;
+        script.onload = resolve;
+        script.onerror = reject;
+        document.head.appendChild(script);
+      });
+    });
+  
+    // 全部加载完成后初始化
+    Promise.all(loadQueue)
+      .then(() => {
+        // 初始化GSAP和ScrollTrigger
+        gsap.registerPlugin(ScrollTrigger);
+        // 你的动画初始化代码
+      })
+      .catch(error => {
+        console.error('脚本加载失败:', error);
+      });
+  }
+  
+  // 双重触发机制（滚动+触摸）
+  window.addEventListener('scroll', loadScriptsWhenNeeded, { 
+    passive: true,  // 提升移动端滚动性能
+    once: true 
+  });
+  
+  window.addEventListener('touchmove', loadScriptsWhenNeeded, { 
+    passive: true,
+    once: true 
+  });
+  
+  // 保险机制：5秒后自动加载
+  let fallbackTimer = setTimeout(() => {
+    if(!window.gsap) loadScriptsWhenNeeded();
+  }, 5000);
+  
+  // 加载完成后清除定时器
+  window.addEventListener('DOMContentLoaded', () => {
+    clearTimeout(fallbackTimer);
+  });
