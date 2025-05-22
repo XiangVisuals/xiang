@@ -31,7 +31,24 @@ if (contentSection && typeof gsap !== 'undefined') {
   );
 }
 
-// 其他代码保持原样...
+/* 初始淡入上滑 */
+document.addEventListener("DOMContentLoaded", () => {
+    const fadeUps = document.querySelectorAll(".fade-up");
+
+    const observer = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add("visible");
+                observer.unobserve(entry.target); // 触发一次后取消监听，提升性能
+            }
+        });
+    }, {
+        threshold: 0.1
+    });
+
+    fadeUps.forEach(el => observer.observe(el));
+});
+
 let currentImageIndex = 0;
 // 动态创建并插入 @keyframes 动画规则
 function injectZoomKeyframes() {
@@ -131,33 +148,6 @@ document.querySelectorAll('.menu-toggle').forEach(btn => {
   });
 });
 
-// GSAP 横向滚动
-gsap.registerPlugin(ScrollTrigger);
-const initHorizontalScroll = () => {
-  gsap.utils.toArray('section').forEach((section, index) => {
-  const wrapper = section.querySelector('.wrapper');
-  if (!wrapper) return; 
-  const [xStart, xEnd] = index % 2 ? 
-    ['100%', (wrapper.scrollWidth - section.offsetWidth) * -1] : 
-    [wrapper.scrollWidth * -1, 0];
-  gsap.fromTo(wrapper, 
-    { x: xStart },
-    {
-    x: xEnd,
-    scrollTrigger: {
-      trigger: section,
-      scrub: 0.5,
-      invalidateOnRefresh: true,
-    }
-    }
-  );
-  });
-};
-window.addEventListener('load', function() {
-  if (typeof gsap !== 'undefined') {
-  imagesLoaded(document.querySelectorAll('img'), initHorizontalScroll);
-  }
-});
 
 // 按需加载额外脚本
 function loadScriptsWhenNeeded() {
@@ -198,3 +188,34 @@ let fallbackTimer = setTimeout(() => {
 window.addEventListener('DOMContentLoaded', () => {
   clearTimeout(fallbackTimer);
 });
+
+// 图片懒加载滑动效果
+const lazyImages = document.querySelectorAll('.grid img');
+const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            observer.unobserve(entry.target);
+        }
+    });
+});
+lazyImages.forEach(img => {
+    observer.observe(img);
+});
+
+// 查看大图功能
+const modal = document.getElementById("modal");
+const modalImg = document.getElementById("modal-img");
+
+lazyImages.forEach(img => {
+    img.addEventListener("click", () => {
+        modalImg.src = img.src;
+        modal.classList.add("open");
+    });
+});
+
+// 点击蒙版关闭 modal
+modal.addEventListener("click", () => {
+    modal.classList.remove("open");
+});
+
