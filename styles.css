@@ -248,7 +248,6 @@ header {
     padding: 4rem 2rem;
 }
 
-
 .grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
@@ -259,7 +258,7 @@ header {
     width: 100%;
     display: block;
     object-fit: cover;
-    cursor: pointer;
+    /* 移除图片上的可点击光标 */
     filter: grayscale(100%);
     /* 初始淡入上滑效果 */
     opacity: 0;
@@ -278,7 +277,6 @@ header {
     filter: grayscale(0%);
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
 }
-
 
 /* Modal styles */
 .modal {
