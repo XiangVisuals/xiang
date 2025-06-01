@@ -1,164 +1,628 @@
-<!DOCTYPE html>
-<html lang="zh">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Xiang Visuals</title>
-    <link rel="stylesheet" href="styles.css">
-    <script src="https://unpkg.com/imagesloaded@4/imagesloaded.pkgd.min.js"></script>
-    <script src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/16327/gsap-latest-beta.min.js"></script>
-    <script src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/16327/ScrollTrigger.min.js"></script>
-    <link rel="icon" href="https://cllli.oss-cn-beijing.aliyuncs.com/logo/logo.png" type="image/x-icon">
-    <script type="text/javascript">
-    (function(c,l,a,r,i,t,y){
-        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
-        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
-        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
-    })(window, document, "clarity", "script", "qt6tim5n2h");
-    </script>
+/* 引入 Google Fonts 中的 Playfair Display 字体 */
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400..900&family=Lakki+Reddy&family=Bebas+Neue&family=Montserrat:wght@500&family=Source+Sans+Pro:wght@400&family=Noto+Serif+SC:wght@400&family=ZCOOL+QingKe+HuangYou&display=swap');
+
+/* 通用样式 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    cursor: none; /* 隐藏默认光标 */
+}
+
+/* 页面加载时 */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #ffffff;
+    height: 100%;
+    overflow-x: hidden;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    cursor: none; /* 隐藏默认光标 */
+}
+
+body.loaded {
+    opacity: 1;
+}
+
+/* 初始淡入上滑 */
+.fade-up {
+    opacity: 0;
+    transform: translateY(20px) scale(1);
+    transition: opacity 0.6s ease, transform 0.6s ease, filter 0.4s ease, box-shadow 0.4s ease;
+}
+
+.fade-up.visible {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+}
+
+/* 默认隐藏菜单按钮 */
+.menu-toggle {
+    display: none;
+}
+
+/* 自定义光标样式 */
+.cursor {
+    position: fixed;
+    width: 10px;
+    height: 10px;
+    background-color: rgb(0, 0, 0);  /* 默认光标颜色 */
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9999;
+    mix-blend-mode: difference;  /* 反转光标下方区域的颜色 */
+    filter: invert(1);  /* 反转颜色（负片效果） */
+    transition: width 0.3s ease, height 0.3s ease, transform 0.3s ease;  /* 动态调整光标大小 */
+}
+
+/* 鼠标悬浮在可点击元素时，光标放大 */
+button:hover .cursor, a:hover .cursor, img:hover .cursor {
+    transform: scale(2);  /* 放大光标 */
+    width: 20px;  /* 放大后的光标宽度 */
+    height: 20px;  /* 放大后的光标高度 */
+}
+
+/* 图片容器不放大光标 */
+.image-container, .image-container img {
+    pointer-events: none; /* 禁用光标事件，让这些元素不触发光标放大效果 */
+}
+
+/* 顶栏样式 */
+header {
+    display: flex;
+    position: absolute; /* 页面滚动随之滚动 */
+    top: 5%; /* 确保在页面的顶部 */
+    left: 0; /* 确保对齐左侧 */
+    right: 0; /* 确保对齐右侧 */
+    padding: 22px 100px;
+    background-color: rgba(255, 255, 255, 0); /* 透明背景 */
+    transition: transform 0.3s ease-in-out;
+    z-index: 999; /* 确保顶栏位于其他内容之上 */
+}
+
+.header-title {
+    position: fixed; /* 固定在页面顶部 */
+    position: absolute; /* 页面滚动随之滚动 */
+    top: 6%; /* 距离页面顶部的距离 */
+    left: 5%; /* 距离页面左边的距离 */
+    z-index: 10; /* 确保在其他元素之上 */
+    font-family: 'Cinzel', serif; /* 使用 Cinzel 字体 */
+    font-size: 32px; /* 设置较大的标题文字大小 */
+    font-weight: 700; /* 使用 Cinzel 字体的粗体 */
+    color: #fff; /* 设置标题颜色 */
+    text-transform: uppercase; /* 将标题字母转换为大写 */
+    letter-spacing: 2px; /* 增加字母间距 */
+    white-space: nowrap; /* 防止文字换行 */
+    pointer-events: auto; /* 允许用户与标题互动 */
+    transition: color 0.3s ease; /* 添加平滑过渡效果 */
+    z-index: 999; /* 确保顶栏位于其他内容之上 */
+}
+
+/* 右侧内容 */
+.header-right {
+    margin-left: auto; /* 推动右侧内容到右边 */
+}
+
+.header-right a {
+    font-family: 'Cinzel', serif; /* 使用 Raleway 字体 */
+    font-size: 20px; /* 设置较大的标题文字大小 */
+    font-weight: 50; /* 使用半粗体 */
+    color: #ffffff; /* 设置标题颜色 */
+    text-decoration: none;
+    margin-left: 15px;
+    mix-blend-mode: difference;  /* 反转光标下方区域的颜色 */
+}
+
+.header-right a:hover {
+    text-decoration: underline;
+}
+
+/* 图片展示部分 */
+.image-section {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.image-container {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: zoom 8s infinite alternate ease-in-out; /* 添加放大动画 */
+}
+
+.image-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    opacity: 1;
+    transition: opacity 1s ease-in-out;
+    position: absolute;
+    animation: zoom 8s infinite alternate ease-in-out; /* 添加放大动画 */
+    loading: lazy; /* 启用图片懒加载 */
+}
+
+.image-container img.hidden {
+    opacity: 0;
+}
+
+
+/* 个人介绍部分 */
+.about-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center; /* 垂直居中 */
+    padding: 100px 10%;
+    background-color: #ffffff;
+    text-align: left;
+    min-height: 100vh; /* 最小高度为整个页面 */
+    box-sizing: border-box; /* 包含内边距和边框 */
+}
+
+.about-container {
+    max-width: 1200px;
+    text-align: justify;
+}
+
+/* 关键：让图片浮动，并让文字围绕 */
+.about-image {
+    float: left;  /* 关键：让图片浮动 */
+    width: 50%;
+    margin: 0 20px 10px 0;
+    shape-outside: margin-box;
+    border-radius: 10px;
+    loading: lazy; /* 启用图片懒加载 */
+}
+
+.about-text h1 {
+    font-family: "ZCOOL QingKe HuangYou", sans-serif;
+    font-size: 48px;
+    margin-bottom: 10px;
+}
+
+.about-text h2 {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 22px;
+    font-weight: 500;
+    color: #666666;
+    margin-bottom: 20px;
+}
+
+.about-text h3 {
+    font-family: "ZCOOL QingKe HuangYou", sans-serif;
+    text-align: center; /* 让 h3 居中 */
+    font-size: 14px;
+    font-weight: 500;
+    color: #00000080;
+    margin-bottom: 20px;
+}
+
+.about-text p {
+    font-family: 'Source Sans Pro', sans-serif;
+    font-size: 14px;
+    line-height: 1.8;
+    color: #333;
+    margin-bottom: 15px;
+}
+
+/* 关键：清除浮动，确保容器高度随文字动态调整 */
+.clearfix::after {
+    content: "";
+    display: block;
+    clear: both;
+}
+
+/* 视频展示部分 */
+.video-section {
+    position: relative; /* 确保它正常排列，而不是覆盖 */
+    width: 100%;
+    background: rgb(255, 255, 255);
+}
+
+.video-section video {
+    width: 60%;
+    max-height: 60%;
+    object-fit: cover;
+    transition: filter 0.8s ease, transform 0.3s ease;
+    loading: lazy;
+    display: block;
+    margin: 0 auto;
+}
+
+
+
+
+/* 图库部分 */
+.container {
+    position: relative; /* 确保它正常排列，而不是覆盖 */
+    background-color: #ffffff;
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 4rem 2rem;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 24px;
+}
+
+.grid img {
+    width: 100%;
+    display: block;
+    object-fit: cover;
+    /* 移除图片上的可点击光标 */
+    filter: grayscale(100%);
+    /* 初始淡入上滑效果 */
+    opacity: 0;
+    transform: translateY(20px) scale(1);
+    transition: opacity 0.6s ease, transform 0.6s ease, filter 0.4s ease, box-shadow 0.4s ease;
+}
+
+/* 当图片进入视口时添加 visible 类 */
+.grid img.visible {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+}
+
+.grid img:hover {
+    transform: translateY(0) scale(1.03);
+    filter: grayscale(0%);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+/* Modal styles */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(255, 255, 255, 0.4); /* 半透明背景 */
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    backdrop-filter: blur(10px); /* 毛玻璃模糊效果 */
+}
+
+.modal.open {
+    display: flex;
+    animation: fadeIn 0.4s forwards;
+}
+
+.modal img {
+    max-width: 90%;
+    max-height: 90%;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* 底栏 */
+.site-footer {
+    background: #fafafa;
+    padding: 40px 0;
+    border-top: 1px solid #00000015;
+    font-family: 'Segoe UI', Arial, sans-serif;
+}
+
+.footer-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 0 20px;
+}
+
+.footer-logo {
+    width: 40px; /* 适当调整 logo 大小 */
+    height: auto;
+}
+
+.copyright {
+    color: #7a7a7a;
+    font-size: 14px;
+    margin-top: 15px;
+}
+
+.footer-nav {
+    display: flex;
+    gap: 30px;
+    margin-bottom: 20px;
+}
+
+.nav-link {
+    color: #666;
+    text-decoration: none;
+    font-size: 15px;
+    transition: color 0.3s ease;
+}
+
+.nav-link:hover {
+    color: #000; /* 黑色文字 */
+    text-decoration: underline;
+}
+
+/* 移动端适配 */
+@media (max-width: 768px) {
+
+    /* 鼠标 */    
+    .cursor {
+        display: none;  /* 移动端设备隐藏自定义光标 */
+    }
+
+    /* 首页背景 */
+    .image-container {
+        width: 100vw;  /* 容器宽度为视口宽度 */
+        height: 100vh; /* 容器高度为视口高度 */
+        display: flex;
+        justify-content: center;  /* 水平居中对齐 */
+        align-items: center;      /* 垂直居中对齐 */
+        overflow: hidden;         /* 防止超出容器的部分 */
+    }
+
+    .image-container img {
+        transform: rotate(90deg);  /* 旋转图片90度 */
+        width: auto;               /* 宽度自适应 */
+        height: auto;              /* 高度自适应 */
+        max-width: 218%;           /* 最大宽度为容器的宽度 */
+        object-fit: cover;        /* 保持原比例且完整显示 */
+    }
+
+    /* 显示一个切换按钮，位于右上角 */
+    .menu-toggle {
+        position: absolute;  /* 更改为 absolute */
+        display: block;
+        top: 15px;
+        right: 15px;
+        --color: #ffffff;
+        width: 36px;
+        height: 36px;
+        padding: 20px;
+        margin: 0;
+        outline: none;
+        border: none;
+        background: none;
+        cursor: pointer;
+        z-index: 101;
+        mix-blend-mode: difference;  /* 反转光标下方区域的颜色 */
+        -webkit-tap-highlight-color: transparent;
+        svg {
+            width: 64px;
+            height: 48px;
+            top: 8px;
+            left: -20px;
+            stroke: var(--color);
+            stroke-width: 2px;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            fill: none;
+            display: block;
+            position: absolute;
+            mix-blend-mode: difference;  /* 反转光标下方区域的颜色 */
+            path {
+                transition: stroke-dasharray var(--duration, .85s) var(--easing, ease) var(--delay, 0s), stroke-dashoffset var(--duration, .85s) var(--easing, ease) var(--delay, 0s);
+                stroke-dasharray: var(--array-1, 26px) var(--array-2, 100px);
+                stroke-dashoffset: var(--offset, 126px);
+                transform: translateZ(0);
+                &:nth-child(2) {
+                    --duration: .7s;
+                    --easing: ease-in;
+                    --offset: 100px;
+                    --array-2: 74px;
+                }
+                &:nth-child(3) {
+                    --offset: 133px;
+                    --array-2: 107px;
+                }
+            }
+        }
+    }
+
+    .menu-toggle.active {
+        svg {
+            path {
+                --offset: 57px;
+                &:nth-child(1),
+                &:nth-child(3) {
+                    --delay: .15s;
+                    --easing: cubic-bezier(.2, .4, .2, 1.1);
+                }
+                &:nth-child(2) {
+                    --duration: .4s;
+                    --offset: 2px;
+                    --array-1: 1px;
+                }
+                &:nth-child(3) {
+                    --offset: 58px;
+                }
+            }
+        }
+    }
+
+    /* 按钮点击后禁用滚动的样式 */
+    body.no-scroll {
+        overflow: hidden;
+    }
     
-</head>
+    /* 顶栏默认状态，保持隐藏 */
+    header {
+        visibility: hidden; /* 默认隐藏顶栏 */
+        background-color: #fff; /* 保证背景为白色 */
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 100vh;
+        display: flex;
+        flex-direction: column; /* 竖向排列 */
+        justify-content: center; /* 内容居中 */
+        align-items: center;
+        z-index: 100;
+        padding: 30px 0; /* 调整竖向排列的内边距 */
+        opacity: 0;  /* 初始透明度为0 */
+        transition: transform 0.5s ease, opacity 0.5s ease, visibility 0s 0.5s; /* 添加过渡效果 */
+    }
 
-<body>
-    <!-- 页面加载动画 -->
-    <div id="loader">
-        <div class="loader-spinner"></div>
-    </div>
-    <!-- 自定义光标 -->
-        <div class="cursor"></div>
-    <!-- 顶部导航栏 -->
+    /* 顶栏显示时的样式 */
+    .show-header header {
+        visibility: visible;  /* 顶栏可见 */
+        transform: translateY(0);  /* 顶栏显示 */
+        opacity: 1;  /* 顶栏完全可见 */
+        transition: transform 0.5s ease, opacity 0.5s ease, visibility 0s; /* 添加过渡效果 */
+    }
 
-    <div class="header-title">XIANG</div>
+    /* 保持 header-left 始终显示 */
+    .header-title {
+        position: absolute;  /* 更改为 absolute */
+        top: 25px;  /* 距离顶部一定间距 */
+        left: 25px; /* 距离左侧一定间距 */
+        z-index: 200;  /* 确保社交图标在顶层，不会被其他内容遮挡 */
+        mix-blend-mode: difference;  /* 反转光标下方区域的颜色 */
+    }
 
+
+    .image-section {
+        height: 100vh;  /* 确保图片部分在移动端满屏显示 */
+    }
+
+    /* 右侧内容 */
+    .header-right {
+        margin-left: 0; /* 禁用 margin-left: auto */
+    }
+
+    .header-right a {
+        display: block;
+        margin-bottom: 20px;  /* 每个链接竖着排列 */
+        text-align: center;
+    }
+
+    /* 加载动画 */
+    #loader {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.9);  /* 背景为黑色透明 */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 9999;
+        opacity: 0;
+        transition: opacity 0.3s ease-out;  /* 动画淡出效果 */
+    }
+
+    .loader-spinner {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        background: linear-gradient(45deg, #3498db, #2ecc71);  /* 渐变背景 */
+        animation: pulse 1.5s infinite ease-in-out;  /* 缩放动画 */
+    }
+
+    /* 介绍部分 */
+    .about-container {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .about-image {
+        width: 100%;
+        height: auto;
+        margin-right: 0;
+        margin-bottom: 20px;
+    }
+
+    .about-text {
+        width: 100%;
+    }
+
+    .about-text h1 {
+        font-size: 36px;
+    }
+
+    .about-text h2 {
+        font-size: 18px;
+    }
+
+    .about-text h3 {
+        display: none;
+    }
+
+    .about-text p:nth-of-type(n+2) {
+        font-size: 13px;
+        display: none;
+    }
+
+    /* 视频部分 */
+    .video-section video {
+        width: 100%;
+        max-height: 100%;
+    }
+
+    /* 图库部分 */
+    h1 {
+        font-size: 1.8rem;
+    }
+      
+    /* 底栏 */
+    .footer-container {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+      }
     
-    <header>
-   
-                
-        <div class="header-right">
-            <a href="https://1x.com/xiangvisuals" target="_blank">1x.com</a>
-            <a href="https://github.com/XiangVisuals" target="_blank">github</a>
-        </div>
-    </header>
-
-    <!-- 移动端的菜单按钮 -->
-    <button class="menu-toggle">
-        <svg viewBox="0 0 64 48">
-            <path  d="M19,15 L45,15 C70,15 58,-2 49.0177126,7 L19,37"></path>
-            <path  d="M19,24 L45,24 C61.2371586,24 57,49 41,33 L32,24"></path>
-            <path  d="M45,33 L19,33 C-8,33 6,-2 22,14 L45,37"></path>
-        </svg>
-    </button>
-
-    <main>
-        <!-- 图片展示部分 -->
-        <section class="image-section">
-            <div class="image-container">
-                <!-- 使用多个img标签，每个图片设置不同的类名 -->
-                <img src="https://cllli.oss-cn-beijing.aliyuncs.com/img/1.jpg" alt="展示图片" class="image visible">
-                <img src="https://cllli.oss-cn-beijing.aliyuncs.com/img/2-2.jpg" alt="展示图片" class="image hidden">
-                <img src="https://cllli.oss-cn-beijing.aliyuncs.com/img/3-2.jpg" alt="展示图片" class="image hidden">
-                <img src="https://cllli.oss-cn-beijing.aliyuncs.com/img/15.jpg" alt="展示图片" class="image hidden">
-            </div>
-        </section>
-
-<!-- 个人介绍部分 -->
-<section class="about-section fade-up">
-    <div class="about-container">
-        <img src="https://cllli.oss-cn-beijing.aliyuncs.com/img/xiang.jpg" alt="个人照片" class="about-image">
-        <div class="about-text">
-            <h1>祥</h1>
-            <h2>摄影师 / 3D 艺术家 / 极客</h2>
-            <p>
-                专注于捕捉光影中的结构与情绪，通过镜头探索人与城市、自然之间的微妙关系。现为图虫、VGC、Shutterstock、Getty Images签约摄影师，长期从事城市风光与自然景观的影像创作，作品曾多次获得 1x.com “Awarded Photographer” 认证，致力于用影像呈现有温度、有思考的视觉表达。
-            </p>
-            <p>
-               DLSKYSCRAPERS 是一个基于 UE5 City Sample 的虚拟大连复刻项目，致力于高度还原这座滨海城市的风貌，并探索数字技术在城市规划与建筑可视化领域的应用。项目不仅精准复现现有城市环境，还将部分未能落成的优秀建筑项目在虚拟世界中实现，以拓展城市设计的想象边界。通过高精度建模、光线追踪渲染、动态天气与时间系统，DLSKYSCRAPERS 呈现大连独特的建筑、人文与自然景观，使其在数字世界中焕发新生。我希望在 UE5 中复刻整个大连市，让它的海岸线、桥梁、街道在四季流转中展现不同的气息，并借助数字技术赋予其新的生命，使其不仅存在于现实，也能在虚拟世界中延续。这不仅是一次技术实验，更是关于时间、空间与情感的探索。我希望构建一个既承载视觉震撼，又能传递城市精神与情感共鸣的沉浸式体验空间，让人们在数字世界中感受这座城市的温度，使远方的人也能触及它的灵魂，助力未来城市发展的想象与探索。
-            </p>
-            <p>
-                作为一名极客，我热衷于探索数码世界的每一个角落。从 Windows、Mac 到 Linux，各大系统我都深度体验，不断优化，以追求更极致的使用体验。在移动端，我刷机无数，Pixel、LG、Nexus 等经典机型都是我的折腾对象，Root、解锁、DIY 刷机已成为日常，享受自由掌控系统的快感。同时，我也钟爱 Surface 等便携设备，深入研究 Windows 平台的自定义优化，让设备在便捷性与性能之间达到最佳平衡。不仅限于软件，我对硬件同样充满热情，从 DIY 组装主机到拆机维修，我喜欢研究电子设备的内部构造，优化性能，甚至挑战极限超频。我曾拆解各种设备，从手机、笔记本到服务器主板，研究它们的设计逻辑，并尝试硬件级改造，让每一台设备都能发挥最大潜能。在这个数码世界里，我不仅是使用者，更是探索者。科技的魅力不仅仅在于它的便捷性，更在于其无限可能性。对于“默认设置”，我从不满足，而是深挖系统与硬件的潜力，让设备真正释放最强性能。无论是优化 Linux 发行版提升生产力，刷机解锁 Android 设备的全部权限，还是 DIY 组装性能怪兽，我都乐在其中。折腾，是我探索科技的方式，也是我享受生活的态度。
-            </p>
-            <p>
-                你总幻想着自己能拍出那些惊艳世人的风光大片，站在雪山之巅，置身星空之下，或是面对无垠的海岸捕捉那一缕绝美光线，但现实却是，你背着几十斤的器材翻山越岭，换来的只有灰蒙蒙的天和失望透顶的心情。你一遍遍查天气预报，盯着卫星云图，计算着日出日落时间，兴奋地设好闹钟，凌晨三点爬起来，困得要死却还是坚持出门，只为了赶上黄金时刻。然而当你站在机位上，迎接你的不是燃烧的朝霞，而是一片毫无层次的天空，或者更惨的是，暴雨倾盆，把你和你的设备淋成落汤鸡。你安慰自己：再等等，风光摄影最重要的是耐心。可你足足等了一天，天还是灰的，光线还是平的，唯一的变化是你的腿开始发麻，镜头上开始结霜，快门摁下去，回家一看，拍出的画面像是提前进入了“后天”末日模式，毫无生机可言。
-            </p>
-
-            <h3>You dream of capturing breathtaking landscapes—standing beneath a sky ablaze with stars, watching golden light kiss the peaks of distant mountains, or witnessing the ocean reflect a fiery sunset in perfect harmony. You meticulously plan every detail: checking weather forecasts, analyzing satellite imagery, calculating sunrise and sunset times down to the minute. The alarm rings at 3 AM, and despite the exhaustion, you push yourself out of bed, pack your gear, and set off into the cold, driven by the hope that today will be the day you capture something truly extraordinary.</h3>
-            <h3>But reality is far less kind. You arrive at your carefully chosen location, only to find the sky blanketed in thick, featureless clouds. No golden glow, no dramatic shadows—just a dull, lifeless expanse stretching endlessly above you. Maybe the rain starts pouring before you even set up your tripod, drenching both you and your equipment. Still, you wait, because patience is the essence of landscape photography. Hours pass. Your fingers go numb, your battery drains, and frost creeps onto your lens. Finally, you return home, cold and exhausted, only to find your photos look as uninspiring as the sky itself—flat, colorless, devoid of life. And yet, you know you'll do it all over again, because deep down, you live for the chase, for the rare moments when everything aligns, and nature finally rewards your relentless pursuit.</h3>
-        </div>
-    </div>
-
+      .footer-right {
+        margin-top: 25px;
+      }
     
-</section>
+      .footer-nav {
+        flex-direction: column;
+        gap: 15px;
+      }
+
+    /* 缩放效果 */
+    @keyframes pulse {
+        0%, 100% {
+            transform: scale(0.8);
+            opacity: 0.7;
+        }
+        50% {
+            transform: scale(1);
+            opacity: 1;
+        }
+    } 
+ 
+}
 
 
+/* 隐藏滚动条*/
+::-webkit-scrollbar {
+    display: none;
+}
 
-<div class="video-section fade-up">
-    <video autoplay loop muted playsinline>
-        <source src="https://cllli.oss-cn-beijing.aliyuncs.com/video/001.mp4" type="video/mp4">
-    </video>
-</div>
+/* 针对 Firefox */
+html {
+    scrollbar-width: none;
+}
 
-
-
-<!-- 内容部分 -->
-    <div class="container">
-        <div class="grid">
-        <img src="https://cllli.oss-cn-beijing.aliyuncs.com/img/15-2.jpg" loading="lazy">
-        <img src="https://cllli.oss-cn-beijing.aliyuncs.com/img/2.jpg" loading="lazy">
-        <img src="https://cllli.oss-cn-beijing.aliyuncs.com/img/1.jpg" loading="lazy">
-        <img src="https://cllli.oss-cn-beijing.aliyuncs.com/img/jpg/4.jpg" loading="lazy">
-        <img src="https://cllli.oss-cn-beijing.aliyuncs.com/img/jpg/11.jpg" loading="lazy">
-        <img src="https://cllli.oss-cn-beijing.aliyuncs.com/img/jpg/5.jpg" loading="lazy">
-        <img src="https://cllli.oss-cn-beijing.aliyuncs.com/img/jpg/12.jpg" loading="lazy">
-        <img src="https://cllli.oss-cn-beijing.aliyuncs.com/img/2-3.jpg" loading="lazy">
-        <img src="https://cllli.oss-cn-beijing.aliyuncs.com/img/jpg/8.jpg" loading="lazy">
-        <img src="https://cllli.oss-cn-beijing.aliyuncs.com/img/13.jpg" loading="lazy">
-        <img src="https://cllli.oss-cn-beijing.aliyuncs.com/img/jpg/14.jpg" loading="lazy">
-        <img src="https://cllli.oss-cn-beijing.aliyuncs.com/img/3.jpg" loading="lazy">
-        <img src="https://cllli.oss-cn-beijing.aliyuncs.com/img/jpg/13.jpg" loading="lazy">
-        <img src="https://cllli.oss-cn-beijing.aliyuncs.com/img/7.jpg" loading="lazy">
-        <img src="https://cllli.oss-cn-beijing.aliyuncs.com/img/jpg/2.jpg" loading="lazy">
-        <img src="https://cllli.oss-cn-beijing.aliyuncs.com/img/jpg/1.jpg" loading="lazy">
-        <img src="https://cllli.oss-cn-beijing.aliyuncs.com/img/8.jpg" loading="lazy">
-        <img src="https://cllli.oss-cn-beijing.aliyuncs.com/img/jpg/17.jpg" loading="lazy">
-        <img src="https://cllli.oss-cn-beijing.aliyuncs.com/img/9.jpg" loading="lazy">
-        <img src="https://cllli.oss-cn-beijing.aliyuncs.com/img/jpg/7.jpg" loading="lazy">
-        <img src="https://cllli.oss-cn-beijing.aliyuncs.com/img/jpg/9.jpg" loading="lazy">
-        <img src="https://cllli.oss-cn-beijing.aliyuncs.com/img/jpg/10.jpg" loading="lazy">
-        <img src="https://cllli.oss-cn-beijing.aliyuncs.com/img/jpg/15.jpg" loading="lazy">
-        <img src="https://cllli.oss-cn-beijing.aliyuncs.com/img/jpg/3.jpg" loading="lazy">
-        <img src="https://cllli.oss-cn-beijing.aliyuncs.com/img/jpg/6.jpg" loading="lazy">
-        <img src="https://cllli.oss-cn-beijing.aliyuncs.com/img/12.jpg" loading="lazy">
-        <img src="https://cllli.oss-cn-beijing.aliyuncs.com/img/jpg/16.jpg" loading="lazy">
-        <img src="https://cllli.oss-cn-beijing.aliyuncs.com/img/11.jpg" loading="lazy">
-        </div>
-    </div>
-
-    <!-- Modal Container -->
-    <div class="modal" id="modal">
-        <img id="modal-img" src="" alt="Enlarged Image">
-    </div>
-
-
-</main>
-
-<!-- 底栏部分 -->
-<footer class="site-footer">
-    <div class="footer-container">
-      <div class="footer-left">
-        <img src="https://cllli.oss-cn-beijing.aliyuncs.com/logo/logo.png" alt="Nature Logo" class="footer-logo">
-        <p class="copyright">© 2020-2025 Xiang Visuals. All rights reserved.</p>
-      </div>
-  
-      <div class="footer-right">
-        <nav class="footer-nav">
-          <a href="#" class="nav-link">首页</a>
-          <a href="mailto:xiangvisuals@gmail.com" class="nav-link">联系我</a> <!-- 修改后的链接 -->
-        </nav>
-      </div>
-    </div>
-  </footer>
-
-    <script src="script.js"></script>
-
-</body>
-</html>
+/* 针对 Edge 和 IE */
+body {
+    -ms-overflow-style: none;
+}
