@@ -577,10 +577,13 @@ header {
     }
 
     /* 图库部分 */
-    h1 {
-        font-size: 1.8rem;
+    .modal img {
+        max-width: 150%;
+        max-height: 150%;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        transform: rotate(90deg); /* 横向显示 */
     }
-      
+        
     /* 底栏 */
     .footer-container {
         flex-direction: column;
