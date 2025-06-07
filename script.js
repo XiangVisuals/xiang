@@ -211,11 +211,13 @@ lazyImages.forEach(img => {
     img.addEventListener("click", () => {
         modalImg.src = img.src;
         modal.classList.add("open");
+        document.body.style.overflow = "hidden";  // 禁止滚动
     });
 });
 
 // 点击蒙版关闭 modal
 modal.addEventListener("click", () => {
     modal.classList.remove("open");
+    document.body.style.overflow = "";  // 恢复滚动
 });
 
