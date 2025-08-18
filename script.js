@@ -189,35 +189,28 @@ window.addEventListener('DOMContentLoaded', () => {
   clearTimeout(fallbackTimer);
 });
 
-// 图片懒加载滑动效果
-const lazyImages = document.querySelectorAll('.grid img');
-const observer = new IntersectionObserver(entries => {
-    entries.forEach(entry => {
-        if (entry.isIntersecting) {
-            entry.target.classList.add('visible');
-            observer.unobserve(entry.target);
-        }
+
+    const modal = document.getElementById('modal');
+    const modalImage = document.getElementById('modal-image');
+    const closeBtn = document.querySelector('.close');
+
+    document.querySelectorAll('.gallery-item img').forEach(item => {
+      item.addEventListener('click', () => {
+        modal.style.display = 'flex';
+        modalImage.src = item.src;
+        modalImage.alt = item.alt;
+        setTimeout(() => modal.classList.add('show'), 10);
+      });
     });
-});
-lazyImages.forEach(img => {
-    observer.observe(img);
-});
 
-// 查看大图功能
-const modal = document.getElementById("modal");
-const modalImg = document.getElementById("modal-img");
-
-lazyImages.forEach(img => {
-    img.addEventListener("click", () => {
-        modalImg.src = img.src;
-        modal.classList.add("open");
-        document.body.style.overflow = "hidden";  // 禁止滚动
+    closeBtn.addEventListener('click', () => {
+      modal.classList.remove('show');
+      setTimeout(() => modal.style.display = 'none', 300);
     });
-});
 
-// 点击蒙版关闭 modal
-modal.addEventListener("click", () => {
-    modal.classList.remove("open");
-    document.body.style.overflow = "";  // 恢复滚动
-});
-
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) {
+        modal.classList.remove('show');
+        setTimeout(() => modal.style.display = 'none', 300);
+      }
+    });
