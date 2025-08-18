@@ -598,7 +598,7 @@ header {
 
     /* 图库部分 */
       .gallery {
-        column-count: 1;
+        column-count: 2;
       }
     }
         
@@ -646,3 +646,4 @@ html {
 body {
     -ms-overflow-style: none;
 }
+
