@@ -240,75 +240,95 @@ header {
 
 
 /* 图库部分 */
-.container {
-    position: relative; /* 确保它正常排列，而不是覆盖 */
-    background-color: #ffffff;
-    max-width: 1440px;
+.gallery-container {
+    max-width: 1400px;
     margin: 0 auto;
-    padding: 4rem 2rem;
+    padding: 40px 20px;
 }
 
-.grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-    gap: 24px;
+.gallery-title {
+    text-align: center;
+    font-size: 2.5rem;
+    font-weight: 300;
+    margin-bottom: 40px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #333;
 }
 
-.grid img {
+/* Masonry 布局 */
+.gallery {
+    column-count: 3;
+    column-gap: 15px;
+}
+
+.gallery-item {
+    margin-bottom: 15px;
+    break-inside: avoid;
+    cursor: pointer;
+    overflow: visible;
+}
+
+.gallery-item img {
     width: 100%;
+    height: auto;
     display: block;
     object-fit: cover;
-    /* 移除图片上的可点击光标 */
-    filter: grayscale(100%);
-    /* 初始淡入上滑效果 */
-    opacity: 0;
-    transform: translateY(20px) scale(1);
-    transition: opacity 0.6s ease, transform 0.6s ease, filter 0.4s ease, box-shadow 0.4s ease;
+    transition: transform 0.3s ease, filter 0.3s ease;
 }
 
-/* 当图片进入视口时添加 visible 类 */
-.grid img.visible {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-}
-
-.grid img:hover {
-    transform: translateY(0) scale(1.03);
+/* 悬浮效果轻微 */
+.gallery-item:hover img {
+    transform: translateY(0) scale(1.01);
     filter: grayscale(0%);
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-}
-
-/* Modal styles */
-.modal {
-    display: none;
-    position: fixed;
-    z-index: 1000;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    background-color: rgba(255, 255, 255, 0.8); /* 半透明背景 */
-    align-items: center;
-    justify-content: center;
-    opacity: 0;
-    backdrop-filter: blur(10px); /* 毛玻璃模糊效果 */
-}
-
-.modal.open {
-    display: flex;
-    animation: fadeIn 0.4s forwards;
-}
-
-.modal img {
-    max-width: 90%;
-    max-height: 90%;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
 }
 
-@keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
+/* Modal 样式 */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.95);
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.modal.show {
+    display: flex;
+    opacity: 1;
+}
+
+.modal img {
+    max-width: 95%;
+    max-height: 95%;
+    object-fit: contain;
+    transform: scale(0.95);
+    transition: transform 0.4s ease;
+}
+
+.modal.show img {
+    transform: scale(1);
+}
+
+.close {
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    color: #fff;
+    font-size: 40px;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.close:hover {
+    color: #bbb;
 }
 
 /* 底栏 */
@@ -510,7 +530,7 @@ header {
         margin-bottom: 20px;  /* 每个链接竖着排列 */
         text-align: center;
     }
-
+   
     /* 加载动画 */
     #loader {
         position: fixed;
@@ -577,11 +597,9 @@ header {
     }
 
     /* 图库部分 */
-    .modal img {
-        max-width: 150%;
-        max-height: 150%;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-        transform: rotate(90deg); /* 横向显示 */
+      .gallery {
+        column-count: 1;
+      }
     }
         
     /* 底栏 */
@@ -612,7 +630,6 @@ header {
         }
     } 
  
-}
 
 
 /* 隐藏滚动条*/
