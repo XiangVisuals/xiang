@@ -321,14 +321,22 @@ header {
     position: absolute;
     top: 20px;
     right: 30px;
+    width: 40px;
+    height: 40px;
     color: #fff;
-    font-size: 40px;
-    cursor: pointer;
-    transition: color 0.3s ease;
+    font-size: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);  /* 微弱阴影 */
+    cursor: none;  /* 隐藏鼠标光标 */
+    transition: all 0.3s ease;
+    user-select: none;  /* 禁止选中文本 */
 }
 
 .close:hover {
-    color: #bbb;
+    transform: scale(1.1);  /* 悬停时稍微放大 */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);  /* 阴影效果稍微加强 */
 }
 
 /* 底栏 */
@@ -646,4 +654,5 @@ html {
 body {
     -ms-overflow-style: none;
 }
+
 
