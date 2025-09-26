@@ -323,12 +323,12 @@ header {
     right: 30px;
     width: 40px;
     height: 40px;
-    color: #fff;
+    mix-blend-mode: difference;  /* 反转光标下方区域的颜色 */
+    filter: invert(1);  /* 反转颜色（负片效果） */
     font-size: 30px;
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);  /* 微弱阴影 */
     cursor: none;  /* 隐藏鼠标光标 */
     transition: all 0.3s ease;
     user-select: none;  /* 禁止选中文本 */
@@ -336,7 +336,6 @@ header {
 
 .close:hover {
     transform: scale(1.1);  /* 悬停时稍微放大 */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);  /* 阴影效果稍微加强 */
 }
 
 /* 底栏 */
@@ -654,5 +653,6 @@ html {
 body {
     -ms-overflow-style: none;
 }
+
 
 
