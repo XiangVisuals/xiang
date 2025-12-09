@@ -320,12 +320,12 @@ header {
 .close {
     position: absolute;
     top: 20px;
-    right: 30px;
+    right: 20px;
     width: 40px;
     height: 40px;
     mix-blend-mode: difference;  /* 反转光标下方区域的颜色 */
     filter: invert(1);  /* 反转颜色（负片效果） */
-    font-size: 30px;
+    font-size: 45px;
     display: flex;
     align-items: center;
     justify-content: center;
