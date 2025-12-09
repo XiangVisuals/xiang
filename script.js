@@ -1,20 +1,29 @@
 // 页面加载完成后使用 GSAP 淡出加载动画
 window.addEventListener('load', function () {
   const loader = document.getElementById('loader');
-  gsap.to(loader, {
-    opacity: 0,
-    duration: 0.3,
-    onComplete: () => {
+  // 检查 gsap 是否已加载，防止报错
+  if (typeof gsap !== 'undefined') {
+    gsap.to(loader, {
+      opacity: 0,
+      duration: 0.3,
+      onComplete: () => {
+        loader.style.display = 'none';
+      }
+    });
+  } else {
+    // 如果 GSAP 未加载的降级处理
+    loader.style.opacity = 0;
+    setTimeout(() => {
       loader.style.display = 'none';
-    }
-  });
+    }, 300);
+  }
   document.body.classList.add('loaded');
   initializeEffects();
 });
 
 // 用 ScrollTrigger 优化 content-section 的滚动动画
 const contentSection = document.querySelector('.content-section');
-if (contentSection && typeof gsap !== 'undefined') {
+if (contentSection && typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
   gsap.fromTo(
     contentSection,
     { opacity: 0, y: 50 },
@@ -97,49 +106,57 @@ function initializeEffects() {
 
 document.addEventListener("DOMContentLoaded", function () {
   let images = document.querySelectorAll('.image-container img');
-  let currentIndex = Math.floor(Math.random() * images.length);
-  images.forEach(img => img.classList.add('hidden'));
-  images[currentIndex].classList.remove('hidden');
+  if (images.length > 0) {
+      let currentIndex = Math.floor(Math.random() * images.length);
+      images.forEach(img => img.classList.add('hidden'));
+      images[currentIndex].classList.remove('hidden');
 
-  setInterval(() => {
-    images[currentIndex].classList.add('hidden');
-    currentIndex = (currentIndex + 1) % images.length;
-    images[currentIndex].classList.remove('hidden');
-  }, 20000);
-});
-
-// 光标移动效果保持原有实现...
-const cursor = document.querySelector('.cursor');
-document.addEventListener('mousemove', (e) => {
-  const mouseX = e.clientX;
-  const mouseY = e.clientY;
-  cursor.style.left = `${mouseX - cursor.offsetWidth / 2}px`;
-  cursor.style.top = `${mouseY - cursor.offsetHeight / 2}px`;
-});
-const clickableElements = document.querySelectorAll('a, img, .header-left, .header-title, .about-text h1, .about-text h2, .about-text p, .sample-text');
-clickableElements.forEach((element) => {
-  element.addEventListener('mouseenter', () => {
-    cursor.style.transform = 'scale(2)';
-    cursor.style.width = '20px';
-    cursor.style.height = '20px';
-  });
-  element.addEventListener('mouseleave', () => {
-    cursor.style.transform = 'scale(1)';
-    cursor.style.width = '10px';
-    cursor.style.height = '10px';
-  });
-});
-const imageContainer = document.querySelector('.image-container');
-imageContainer.addEventListener('mouseenter', () => {
-  cursor.style.transform = 'scale(1)';
-  cursor.style.width = '10px';
-  cursor.style.height = '10px';
-});
-if (/Mobi|Android/i.test(navigator.userAgent)) {
-  if (cursor) {
-    cursor.style.display = 'none';
+      setInterval(() => {
+        images[currentIndex].classList.add('hidden');
+        currentIndex = (currentIndex + 1) % images.length;
+        images[currentIndex].classList.remove('hidden');
+      }, 20000);
   }
+});
+
+// 光标移动效果
+const cursor = document.querySelector('.cursor');
+if (cursor) {
+    document.addEventListener('mousemove', (e) => {
+      const mouseX = e.clientX;
+      const mouseY = e.clientY;
+      cursor.style.left = `${mouseX - cursor.offsetWidth / 2}px`;
+      cursor.style.top = `${mouseY - cursor.offsetHeight / 2}px`;
+    });
+    
+    const clickableElements = document.querySelectorAll('a, img, .header-left, .header-title, .about-text h1, .about-text h2, .about-text p, .sample-text, button');
+    clickableElements.forEach((element) => {
+      element.addEventListener('mouseenter', () => {
+        cursor.style.transform = 'scale(2)';
+        cursor.style.width = '20px';
+        cursor.style.height = '20px';
+      });
+      element.addEventListener('mouseleave', () => {
+        cursor.style.transform = 'scale(1)';
+        cursor.style.width = '10px';
+        cursor.style.height = '10px';
+      });
+    });
+    
+    const imageContainer = document.querySelector('.image-container');
+    if (imageContainer) {
+        imageContainer.addEventListener('mouseenter', () => {
+          cursor.style.transform = 'scale(1)';
+          cursor.style.width = '10px';
+          cursor.style.height = '10px';
+        });
+    }
+
+    if (/Mobi|Android/i.test(navigator.userAgent)) {
+        cursor.style.display = 'none';
+    }
 }
+
 document.querySelectorAll('.menu-toggle').forEach(btn => {
   btn.addEventListener('click', () => {
     document.body.classList.toggle('show-header');
@@ -174,10 +191,12 @@ function loadScriptsWhenNeeded() {
   
   Promise.all(loadQueue)
     .then(() => {
-    gsap.registerPlugin(ScrollTrigger);
+        if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
+            gsap.registerPlugin(ScrollTrigger);
+        }
     })
     .catch(error => {
-    console.error('脚本加载失败:', error);
+        console.error('脚本加载失败:', error);
     });
 }
 window.addEventListener('scroll', loadScriptsWhenNeeded, { passive: true, once: true });
@@ -190,27 +209,53 @@ window.addEventListener('DOMContentLoaded', () => {
 });
 
 
-    const modal = document.getElementById('modal');
-    const modalImage = document.getElementById('modal-image');
-    const closeBtn = document.querySelector('.close');
+// Modal 逻辑 (增强版滚动锁定)
+const modal = document.getElementById('modal');
+const modalImage = document.getElementById('modal-image');
+const closeBtn = document.querySelector('.close');
+
+// 辅助函数：锁定和解锁滚动
+const lockScroll = () => {
+    document.body.style.overflow = 'hidden';
+    document.documentElement.style.overflow = 'hidden'; // 同时锁定 html 标签
+};
+
+const unlockScroll = () => {
+    document.body.style.overflow = '';
+    document.documentElement.style.overflow = '';
+};
+
+if (modal && modalImage && closeBtn) {
+    // 阻止 Modal 背景上的滑动事件传递（解决移动端背景滚动穿透）
+    modal.addEventListener('touchmove', (e) => {
+        if(e.target === modal) {
+            e.preventDefault();
+        }
+    }, { passive: false });
 
     document.querySelectorAll('.gallery-item img').forEach(item => {
       item.addEventListener('click', () => {
         modal.style.display = 'flex';
         modalImage.src = item.src;
         modalImage.alt = item.alt;
+        
+        lockScroll(); // 强制锁定
+        
         setTimeout(() => modal.classList.add('show'), 10);
       });
     });
 
     closeBtn.addEventListener('click', () => {
       modal.classList.remove('show');
+      unlockScroll(); // 解锁
       setTimeout(() => modal.style.display = 'none', 300);
     });
 
     modal.addEventListener('click', (e) => {
       if (e.target === modal) {
         modal.classList.remove('show');
+        unlockScroll(); // 解锁
         setTimeout(() => modal.style.display = 'none', 300);
       }
     });
+}
