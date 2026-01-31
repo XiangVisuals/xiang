@@ -259,3 +259,36 @@ if (modal && modalImage && closeBtn) {
       }
     });
 }
+
+        // 注册 ScrollTrigger 插件
+        gsap.registerPlugin(ScrollTrigger);
+
+        window.addEventListener('DOMContentLoaded', () => {
+            // 元素逐个揭示动画
+            document.querySelectorAll('.reveal').forEach((el, index) => {
+                gsap.to(el, {
+                    scrollTrigger: {
+                        trigger: el,
+                        start: "top 90%", // 当元素进入视口 90% 时触发
+                        toggleActions: "play none none none"
+                    },
+                    opacity: 1,
+                    y: 0,
+                    duration: 1.2,
+                    ease: "power3.out",
+                    delay: index * 0.1 // 产生交错感
+                });
+            });
+
+            // 背景装饰字随滚动而产生的视差效果
+            gsap.to(".bg-char", {
+                scrollTrigger: {
+                    trigger: ".intro-section",
+                    start: "top bottom",
+                    end: "bottom top",
+                    scrub: 1.5 // 滚动时产生平滑位移
+                },
+                y: -100, // 向上位移
+                opacity: 0.3 // 滚动时产生虚实变化
+            });
+        });

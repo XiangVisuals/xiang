@@ -7,6 +7,10 @@
     padding: 0;
     box-sizing: border-box;
     cursor: none; /* 隐藏默认光标 */
+                --bg-color: #ffffff;
+            --text-main: #1a1a1a;
+            --text-sub: #888888;
+    
 }
 
 /* 页面加载时 */
@@ -18,6 +22,11 @@ body {
     opacity: 0;
     transition: opacity 0.5s ease;
     cursor: none; /* 隐藏默认光标 */
+                margin: 0;
+            padding: 0;
+            font-family: 'Montserrat', 'Noto Serif SC', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
 }
 
 body.loaded {
@@ -154,69 +163,141 @@ header {
 
 
 /* 个人介绍部分 */
-.about-section {
+.intro-section {
+    padding: 150px 10vw;
+    position: relative;
+    background: #fff;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+}
+
+/* 背景装饰大字 */
+.bg-char {
+    position: absolute;
+    right: 5%;
+    top: 50%;
+    transform: translateY(-50%);
+    font-family: 'Noto Serif SC', serif;
+    font-size: 45vw;
+    font-weight: 900;
+    color: #f2f2f2; /* 极淡的灰色 */
+    z-index: 0;
+    pointer-events: none;
+    line-height: 1;
+    user-select: none;
+}
+
+.intro-container {
+    display: grid;
+    grid-template-columns: 1fr 1.4fr;
+    gap: 80px;
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+/* 左侧视觉图 */
+.intro-visual {
+    position: relative;
+}
+
+.intro-portrait {
+    width: 100%;
+    height: 75vh;
+    object-fit: cover;
+    filter: grayscale(100%);
+    transition: filter 1s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: 0 30px 60px rgba(0,0,0,0.05);
+}
+
+.intro-portrait:hover {
+    filter: grayscale(0%);
+}
+
+/* 右侧内容区 */
+.intro-content {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: center; /* 垂直居中 */
-    padding: 100px 10%;
-    background-color: #ffffff;
-    text-align: left;
-    min-height: 100vh; /* 最小高度为整个页面 */
-    box-sizing: border-box; /* 包含内边距和边框 */
+    justify-content: center;
 }
 
-.about-container {
-    max-width: 1200px;
-    text-align: justify;
-}
-
-/* 关键：让图片浮动，并让文字围绕 */
-.about-image {
-    float: left;  /* 关键：让图片浮动 */
-    width: 50%;
-    margin: 0 20px 10px 0;
-    shape-outside: margin-box;
-    border-radius: 10px;
-    loading: lazy; /* 启用图片懒加载 */
-}
-
-.about-text h1 {
-    font-family: "ZCOOL QingKe HuangYou", sans-serif;
-    font-size: 48px;
-    margin-bottom: 10px;
-}
-
-.about-text h2 {
-    font-family: 'Montserrat', sans-serif;
-    font-size: 22px;
-    font-weight: 500;
-    color: #666666;
-    margin-bottom: 20px;
-}
-
-.about-text h3 {
-    font-family: "ZCOOL QingKe HuangYou", sans-serif;
-    text-align: center; /* 让 h3 居中 */
-    font-size: 14px;
-    font-weight: 500;
-    color: #00000080;
-    margin-bottom: 20px;
-}
-
-.about-text p {
-    font-family: 'Source Sans Pro', sans-serif;
-    font-size: 14px;
-    line-height: 1.8;
-    color: #333;
-    margin-bottom: 15px;
-}
-
-/* 关键：清除浮动，确保容器高度随文字动态调整 */
-.clearfix::after {
-    content: "";
+.intro-label {
+    font-size: 11px;
+    letter-spacing: 10px;
+    color: var(--text-sub);
+    margin-bottom: 25px;
     display: block;
-    clear: both;
+    text-transform: uppercase;
+}
+
+.intro-name {
+    font-family: 'Noto Serif SC', serif;
+    font-size: clamp(60px, 8vw, 120px);
+    font-weight: 900;
+    line-height: 1;
+    margin-bottom: 20px;
+    margin-left: -5px;
+}
+
+.intro-title {
+    font-size: 18px;
+    font-weight: 300;
+    letter-spacing: 5px;
+    margin-bottom: 50px;
+    color: #444;
+}
+
+.intro-description {
+    max-width: 520px;
+    font-size: 15px;
+    font-weight: 300;
+    line-height: 2.4;
+    color: #555;
+    text-align: justify;
+    margin-bottom: 70px;
+}
+
+/* 荣誉/履历网格 */
+.achievement-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 40px;
+    border-top: 1px solid #eee;
+    padding-top: 50px;
+}
+
+.achieve-item {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.achieve-num {
+    font-family: 'Cinzel', serif;
+    font-size: 12px;
+    color: #bbb;
+}
+
+.achieve-text {
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 1px;
+}
+
+.achieve-sub {
+    font-size: 11px;
+    color: var(--text-sub);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* 动画初始状态 */
+.reveal {
+    opacity: 0;
+    transform: translateY(30px);
 }
 
 /* 视频展示部分 */
@@ -565,38 +646,22 @@ header {
     }
 
     /* 介绍部分 */
-    .about-container {
-        flex-direction: column;
-        align-items: center;
-        text-align: center;
+    .intro-container {
+        grid-template-columns: 1fr;
+        gap: 50px;
     }
-
-    .about-image {
-        width: 100%;
-        height: auto;
-        margin-right: 0;
-        margin-bottom: 20px;
-    }
-
-    .about-text {
-        width: 100%;
-    }
-
-    .about-text h1 {
-        font-size: 36px;
-    }
-
-    .about-text h2 {
-        font-size: 18px;
-    }
-
-    .about-text h3 {
+    .bg-char {
         display: none;
     }
-
-    .about-text p:nth-of-type(n+2) {
-        font-size: 13px;
-        display: none;
+    .intro-portrait {
+        height: 50vh;
+    }
+    .intro-section {
+        padding: 100px 5vw;
+    }
+    .achievement-grid {
+        grid-template-columns: 1fr;
+        gap: 30px;
     }
 
     /* 视频部分 */
