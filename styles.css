@@ -309,7 +309,7 @@ header {
 
 .video-section video {
     width: 60%;
-    max-height: 60%;
+    max-height: 100%;
     object-fit: cover;
     transition: filter 0.8s ease, transform 0.3s ease;
     loading: lazy;
@@ -373,7 +373,7 @@ header {
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.8);
+    background: rgb(255, 255, 255);
     backdrop-filter: blur(15px);
     -webkit-backdrop-filter: blur(15px); /* Safari 兼容 */
     justify-content: center;
@@ -389,8 +389,8 @@ header {
 }
 
 .modal img {
-    max-width: 95%;
-    max-height: 95%;
+    max-width: 80%;
+    max-height: 80%;
     object-fit: contain;
     transform: scale(0.95);
     transition: transform 0.4s ease;
@@ -402,23 +402,26 @@ header {
 
 .close {
     position: absolute;
-    top: 20px;
-    right: 20px;
-    width: 40px;
-    height: 40px;
-    mix-blend-mode: difference;  /* 反转光标下方区域的颜色 */
-    filter: invert(1);  /* 反转颜色（负片效果） */
+    /* --- 修改部分 --- */
+    bottom: 30px;           /* 距离底部 20px */
+    /* ---------------- */   
+    width: 50px;
+    height: 50px;
+    mix-blend-mode: difference;
+    filter: invert(1);
     font-size: 45px;
     display: flex;
     align-items: center;
     justify-content: center;
-    cursor: none;  /* 隐藏鼠标光标 */
+    cursor: none;
     transition: all 0.3s ease;
-    user-select: none;  /* 禁止选中文本 */
+    user-select: none;
 }
 
 .close:hover {
-    transform: scale(1.1);  /* 悬停时稍微放大 */
+    transform: scale(1.1);
+    filter: invert(0.7);
+    opacity: 0.8;
 }
 
 /* 底栏 */
