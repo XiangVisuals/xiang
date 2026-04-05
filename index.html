@@ -2,191 +2,907 @@
 <html lang="zh">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Xiang Visuals</title>
-    <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Montserrat:wght@200;400;600&family=Noto+Serif+SC:wght@200;500;900&display=swap">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-    <script src="https://unpkg.com/imagesloaded@4/imagesloaded.pkgd.min.js"></script>
-    <script src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/16327/gsap-latest-beta.min.js"></script>
-    <script src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/16327/ScrollTrigger.min.js"></script>
-    <link rel="icon" href="https://cllli.oss-cn-beijing.aliyuncs.com/logo/logo.png" type="image/x-icon">
-    <script type="text/javascript">
-    (function(c,l,a,r,i,t,y){
-        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
-        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
-        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
-    })(window, document, "clarity", "script", "qt6tim5n2h");
-    </script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>XIANGVISUALS</title>
+    <!-- 添加网站图标 (Favicon) -->
+    <link rel="icon" href="https://cllli.oss-cn-beijing.aliyuncs.com/logo/logo.svg" type="image/svg+xml">
+    <!-- 引入高级感字体 -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Montserrat:wght@200;300;400;500&family=Noto+Serif+SC:wght@300;400;700&display=swap">
     
+    <!-- ==========================================
+                    CSS 样式部分 
+    ========================================== -->
+    <style>
+        /* === 基础变量与重置 === */
+        :root {
+            --bg-color: #ffffff;
+            --text-main: #0a0a0a;
+            --text-sub: #888888;
+            --border-color: #e0e0e0;
+            --font-serif: 'Cinzel', 'Noto Serif SC', serif;
+            --font-sans: 'Montserrat', sans-serif;
+            --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+            /* 更柔和优雅的缓动曲线，用于项目出场 */
+            --ease-gentle: cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        /* 隐藏滚动条但保留滚动功能 */
+        ::-webkit-scrollbar { display: none; }
+        html, body {
+            -ms-overflow-style: none;  /* IE and Edge */
+            scrollbar-width: none;  /* Firefox */
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: var(--font-sans);
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+        }
+
+        /* === 全局 Loading 动画 === */
+        #page-loader {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-color: var(--bg-color); z-index: 99999;
+            display: flex; justify-content: center; align-items: center;
+            transition: opacity 0.8s ease, visibility 0.8s ease;
+        }
+        #page-loader.hidden {
+            opacity: 0; visibility: hidden;
+        }
+        .loader-text {
+            font-family: var(--font-serif); font-size: 14px; letter-spacing: 6px;
+            color: var(--text-main); animation: pulse 1.5s infinite;
+        }
+
+        /* === 页面过渡动画遮罩 === */
+        #page-transition {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
+            background-color: var(--text-main); z-index: 8000;
+            transform: translateY(100%); 
+            transition: transform 0.8s cubic-bezier(0.7, 0, 0.3, 1);
+        }
+        #page-transition.active { transform: translateY(0); } 
+        #page-transition.done { transform: translateY(-100%); } 
+        .no-transition { transition: none !important; }
+
+        /* === 桌面端自定义光标 === */
+        @media (pointer: fine) {
+            body, a, button, img { cursor: none !important; }
+        }
+        
+        .cursor {
+            position: fixed; top: 0; left: 0; width: 8px; height: 8px;
+            background-color: var(--text-main); border-radius: 50%;
+            pointer-events: none; z-index: 9999;
+            transform: translate(-50%, -50%);
+            transition: width 0.3s var(--ease-out), height 0.3s var(--ease-out), background-color 0.3s;
+            display: none; 
+        }
+
+        .cursor.hovering {
+            width: 45px; height: 45px;
+            background-color: rgba(0, 0, 0, 0.05);
+            border: 1px solid rgba(0, 0, 0, 0.2);
+        }
+
+        /* 移动端禁用光标 */
+        @media (max-width: 768px) {
+            .cursor { display: none !important; }
+            body, a, button, img { cursor: auto !important; }
+        }
+
+        /* === 顶栏导航 === */
+        .site-header {
+            position: fixed; top: 0; left: 0; width: 100%;
+            padding: 40px 6vw;
+            display: flex; justify-content: space-between; align-items: center;
+            z-index: 100;
+            background: linear-gradient(to bottom, rgba(255,255,255,1) 0%, rgba(255,255,255,0) 100%);
+            pointer-events: none; 
+            transition: background 0.4s var(--ease-out), backdrop-filter 0.4s var(--ease-out);
+        }
+        .header-logo, .header-nav, .menu-btn { pointer-events: auto; }
+
+        .header-logo {
+            font-family: var(--font-serif); font-size: 22px; font-weight: 700;
+            color: var(--text-main); text-decoration: none; letter-spacing: 4px;
+            transition: opacity 0.4s var(--ease-out);
+        }
+
+        .header-nav { display: flex; gap: 40px; align-items: center; }
+
+        .header-nav a {
+            font-size: 11px; font-weight: 500; color: var(--text-main);
+            text-decoration: none; text-transform: uppercase; letter-spacing: 2px;
+            opacity: 0.4; transition: opacity 0.3s ease;
+        }
+
+        .header-nav a:hover, .header-nav a.active { opacity: 1; }
+        
+        .menu-btn {
+            display: none; flex-direction: column; gap: 6px;
+            background: rgba(255,255,255,0); border: none; z-index: 101; 
+            width: 44px; height: 44px; align-items: center; justify-content: center;
+            border-radius: 50%;
+            transition: all 0.4s var(--ease-out);
+        }
+        .menu-btn span {
+            display: block; width: 24px; height: 1px; background-color: var(--text-main);
+            transition: transform 0.4s var(--ease-out), opacity 0.4s var(--ease-out);
+        }
+
+        /* === 视图容器 === */
+        .view-section {
+            display: none; opacity: 0; transition: opacity 0.6s var(--ease-out);
+        }
+        .view-section.active { display: block; opacity: 1; }
+
+        /* === 首页：主视觉区 === */
+        .hero-section {
+            height: 100vh; width: 100vw;
+            display: flex; align-items: center; justify-content: center;
+            position: relative; padding: 0 10vw;
+        }
+
+        .hero-layout {
+            display: flex; align-items: center; justify-content: center; gap: 5vw;
+            width: 100%; max-width: 1400px; margin-top: 5vh;
+        }
+
+        .hero-meta {
+            font-family: var(--font-sans); font-size: 10px; font-weight: 300;
+            letter-spacing: 4px; color: var(--text-sub);
+            writing-mode: vertical-rl; transform: rotate(180deg);
+            display: flex; align-items: center; gap: 20px;
+        }
+        .hero-meta.right { transform: none; }
+        .hero-meta .line { width: 1px; height: 50px; background-color: var(--border-color); }
+
+        .hero-image-wrapper {
+            display: flex; justify-content: center; align-items: center;
+            max-width: 45vw; height: 65vh; 
+        }
+
+        .hero-image-wrapper img {
+            width: auto; height: auto; 
+            max-width: 100%; max-height: 100%;
+            object-fit: contain; 
+            box-shadow: 0 30px 60px rgba(0,0,0,0.1);
+            animation: heroReveal 2.5s var(--ease-gentle); /* 让封面图进入也更柔和 */
+        }
+
+        @keyframes heroReveal {
+            0% { transform: scale(1.05); opacity: 0; filter: blur(15px); }
+            100% { transform: scale(1); opacity: 1; filter: blur(0); }
+        }
+
+        /* === 极简滚动图标 === */
+        .scroll-icon {
+            position: absolute; bottom: 40px; left: 50%; transform: translateX(-50%);
+            width: 24px; height: 24px; color: var(--text-sub);
+            animation: floatScroll 3s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+            opacity: 0.6; display: flex; justify-content: center;
+        }
+        .scroll-icon svg { width: 16px; height: 16px; }
+
+        @keyframes floatScroll {
+            0%, 100% { transform: translate(-50%, 0); opacity: 0.3; }
+            50% { transform: translate(-50%, 8px); opacity: 0.8; }
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
+        }
+
+        /* === 瀑布流图库 === */
+        .gallery-container {
+            max-width: 1400px; margin: 0 auto; padding: 100px 6vw 150px;
+        }
+
+        .gallery { column-count: 3; column-gap: 30px; }
+        
+        .gallery-item {
+            margin-bottom: 30px; break-inside: avoid; overflow: hidden;
+            /* 增大位移，并使用更长的过渡时间与极度平滑的缓动，显得从容优雅 */
+            opacity: 0; transform: translateY(60px); 
+            transition: opacity 1.5s var(--ease-gentle), transform 1.5s var(--ease-gentle);
+        }
+        
+        .gallery-item.visible { opacity: 1; transform: translateY(0); }
+
+        .gallery-item img {
+            width: 100%; display: block; object-fit: cover;
+            filter: grayscale(15%); 
+            transition: transform 1.2s var(--ease-out), filter 1.2s ease;
+        }
+
+        .gallery-item:hover img { transform: scale(1.02); filter: grayscale(0%); }
+
+        /* === 沉浸式组图排版模态框 (Project Modal) === */
+        .detail-modal {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: #ffffff; z-index: 2000; 
+            opacity: 0; transition: opacity 0.6s ease;
+            overflow-y: auto; color: var(--text-main); 
+            -ms-overflow-style: none; scrollbar-width: none;
+        }
+        .detail-modal::-webkit-scrollbar { display: none; }
+        .detail-modal.show { display: block; opacity: 1; }
+
+        .detail-content-wrapper {
+            display: flex; flex-direction: column; min-height: 100vh; padding: 120px 5vw 150px;
+            max-width: 1000px; margin: 0 auto; align-items: center;
+        }
+
+        .detail-header {
+            text-align: center; margin-bottom: 60px; max-width: 800px; width: 100%;
+        }
+
+        .detail-header h2 {
+            font-family: var(--font-serif); font-size: 38px; line-height: 1.4;
+            margin-bottom: 20px; color: var(--text-main); letter-spacing: 2px;
+        }
+
+        .detail-meta {
+            font-size: 11px; letter-spacing: 4px; color: var(--text-sub); text-transform: uppercase;
+        }
+
+        .detail-text-grid {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 4vw;
+            margin-bottom: 120px; max-width: 900px; width: 100%;
+        }
+
+        .detail-story-col {
+            font-size: 13px; font-weight: 300; line-height: 2.4; 
+            color: #666666; text-align: justify;
+        }
+
+        /* 组图排版 */
+        .detail-images {
+            display: grid; grid-template-columns: repeat(12, 1fr); 
+            gap: 4vw 2vw; width: 100%; align-items: start;
+        }
+
+        .detail-images img {
+            width: 100%; height: auto; object-fit: cover; display: block;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05); 
+            /* 组图加载更柔和 */
+            opacity: 0; transform: translateY(40px); 
+            transition: opacity 1.5s var(--ease-gentle), transform 1.5s var(--ease-gentle);
+        }
+
+        .detail-images img:nth-child(1) { grid-column: 1 / 13; margin-bottom: 2vw; }
+        .detail-images img:nth-child(n+2) { grid-column: span 6; }
+        
+        .detail-images img.loaded { opacity: 1; transform: translateY(0); }
+
+        /* === 极简高级 悬浮关闭按钮 === */
+        .minimal-close-btn {
+            position: fixed; top: 40px; right: 5vw;
+            display: flex; align-items: center; gap: 12px;
+            background: none; border: none; z-index: 2010;
+            color: #1ba9c6; mix-blend-mode: difference; padding: 10px;
+        }
+        .minimal-close-btn .close-text {
+            font-family: var(--font-sans);
+            font-size: 10px; font-weight: 500; letter-spacing: 2px;
+            text-transform: uppercase;
+            transition: transform 0.4s var(--ease-out), opacity 0.4s var(--ease-out);
+        }
+        .minimal-close-btn .close-icon {
+            position: relative; width: 44px; height: 44px;
+            border-radius: 50%; border: 1px solid rgba(255, 255, 255, 0.4);
+            display: flex; justify-content: center; align-items: center;
+            transition: all 0.4s var(--ease-out);
+        }
+        .minimal-close-btn .close-icon::before, 
+        .minimal-close-btn .close-icon::after {
+            content: ''; position: absolute;
+            width: 14px; height: 1px; background-color: #ffffff;
+            transition: transform 0.4s var(--ease-out);
+        }
+        .minimal-close-btn .close-icon::before { transform: rotate(45deg); }
+        .minimal-close-btn .close-icon::after { transform: rotate(-45deg); }
+
+        .minimal-close-btn:hover .close-icon { transform: rotate(90deg) scale(1.05); border-color: #ffffff; }
+        .minimal-close-btn:hover .close-text { transform: translateX(-5px); opacity: 0.6; }
+
+        /* === 单图极致放大模态框 === */
+        .zoom-modal {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(255, 255, 255, 0.98); z-index: 3000;
+            justify-content: center; align-items: center;
+            opacity: 0; transition: opacity 0.6s ease;
+        }
+        .zoom-modal.show { display: flex; opacity: 1; }
+        
+        .zoom-modal img {
+            max-width: 90vw; max-height: 90vh; object-fit: contain;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.05);
+            transform: scale(0.95); transition: transform 0.8s var(--ease-gentle);
+        }
+        .zoom-modal.show img { transform: scale(1); }
+
+        /* === 关于页面 (About Section) === */
+        .about-section {
+            min-height: 100vh; padding: 150px 8vw 100px; display: flex; align-items: center;
+        }
+
+        .about-grid {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 10vw;
+            max-width: 1200px; margin: 0 auto; align-items: center;
+        }
+
+        .about-portrait {
+            width: 100%; height: 70vh; object-fit: cover; 
+            box-shadow: 0 20px 40px rgba(0,0,0,0.05);
+        }
+
+        .about-content .label { font-size: 10px; letter-spacing: 4px; color: var(--text-sub); display: block; margin-bottom: 20px; }
+        .about-content h1 { font-family: var(--font-serif); font-size: 60px; font-weight: 700; line-height: 1; margin-bottom: 20px; color: var(--text-main); }
+        .about-content h2 { font-size: 14px; font-weight: 300; letter-spacing: 2px; color: #555; margin-bottom: 40px; }
+        .about-content p { font-size: 14px; font-weight: 300; line-height: 2.2; color: #444; margin-bottom: 60px; }
+
+        .achievements {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 30px;
+            border-top: 1px solid var(--border-color); padding-top: 40px;
+        }
+
+        .achieve-item { display: flex; flex-direction: column; gap: 6px; }
+        .achieve-num { font-family: var(--font-serif); font-size: 12px; color: var(--text-sub); }
+        .achieve-text { font-size: 13px; font-weight: 500; }
+
+        /* === 网站底栏 (Footer) === */
+        .site-footer {
+            width: 100%; padding: 40px 6vw; display: flex; justify-content: space-between; align-items: center;
+            border-top: 1px solid var(--border-color); background-color: var(--bg-color);
+            font-family: var(--font-sans); font-size: 10px; letter-spacing: 2px;
+            color: var(--text-sub); text-transform: uppercase;
+        }
+        .site-footer a { color: var(--text-sub); text-decoration: none; transition: color 0.3s ease; }
+        .site-footer a:hover { color: var(--text-main); }
+
+        /* === 移动端适配 === */
+        @media (max-width: 768px) {
+            .site-header { padding: 25px 5vw; background: rgba(255,255,255,0.95); backdrop-filter: blur(10px); }
+            .menu-btn { display: flex; }
+            .header-nav {
+                position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
+                background: #fff; flex-direction: column; justify-content: center; gap: 30px;
+                opacity: 0; pointer-events: none; transition: 0.4s ease;
+            }
+            .header-nav.nav-open { opacity: 1; pointer-events: auto; }
+            .header-nav a { font-size: 16px; opacity: 1; }
+            
+            .menu-btn.active span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+            .menu-btn.active span:nth-child(2) { opacity: 0; }
+            .menu-btn.active span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+            .minimal-close-btn { display: none !important; } 
+            
+            .site-header.over-modal {
+                z-index: 3100; background: transparent; backdrop-filter: none; -webkit-backdrop-filter: none;
+            }
+            .site-header.over-modal .header-logo { opacity: 0; pointer-events: none; }
+            .site-header.over-modal .menu-btn {
+                background-color: rgba(255, 255, 255, 0.85); backdrop-filter: blur(4px);
+                -webkit-backdrop-filter: blur(4px); border: 1px solid rgba(0, 0, 0, 0.1);
+                box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            }
+
+            .hero-layout { gap: 0; }
+            .hero-meta { display: none; } 
+            .hero-image-wrapper { max-width: 85vw; height: 50vh; }
+
+            .gallery { column-count: 1; }
+            .gallery-container { padding-top: 50px; }
+
+            .about-grid { grid-template-columns: 1fr; gap: 40px; }
+            .about-portrait { height: 50vh; }
+            .achievements { grid-template-columns: 1fr; }
+
+            .detail-content-wrapper { padding: 80px 5vw 100px; }
+            .detail-header h2 { font-size: 26px; }
+            .detail-text-grid { grid-template-columns: 1fr; gap: 20px; margin-bottom: 60px; }
+            
+            .detail-images { display: flex; flex-direction: column; gap: 30px; }
+            .detail-images img { width: 100% !important; margin: 0 !important; }
+            
+            .zoom-modal img { max-width: 100vw; max-height: 100vh; }
+
+            .site-footer { flex-direction: column; gap: 15px; padding: 30px 5vw; text-align: center; }
+        }
+    </style>
 </head>
-
 <body>
-    <!-- 页面加载动画 -->
-    <div id="loader">
-        <div class="loader-spinner"></div>
+
+    <div id="page-loader">
+        <span class="loader-text">XIANG VISUALS</span>
     </div>
-    <!-- 自定义光标 -->
-        <div class="cursor"></div>
-    <!-- 顶部导航栏 -->
 
-    <div class="header-title">XIANG</div>
+    <div id="page-transition"></div>
 
-    
-    <header>           
-        <div class="header-right">
-            <a href="https://1x.com/xiangvisuals" target="_blank">1x.com</a>
-            <a href="https://www.instagram.com/xiangvisuals?igsh=dHJrZGtqZ2NiOTJ2" target="_blank">ins</a>
-            <a href="https://pano360.xiangvisuals.com" target="_blank">pano360</a>
-            <a href="https://Frame.xiangvisuals.com" target="_blank">Frame</a>
-        </div>
+    <div class="cursor" id="cursor"></div>
+
+    <header class="site-header" id="site-header">
+        <a href="#" class="header-logo" onclick="switchView('works')">XIANG</a>
+        
+        <button class="menu-btn" id="menu-btn">
+            <span></span><span></span><span></span>
+        </button>
+
+        <nav class="header-nav" id="nav-links">
+            <a href="#" class="nav-link active" data-target="works">Works</a>
+            <a href="#" class="nav-link" data-target="about">About</a>
+            <a href="https://frame.xiangvisuals.com/" target="_blank">frame</a>
+            <a href="https://pano360.xiangvisuals.com" target="_blank">Pano360</a>
+           <a href="https://www.instagram.com/xiangvisuals?igsh=dHJrZGtqZ2NiOTJ2" target="_blank">Instagram</a>
+        </nav>
     </header>
 
-    <!-- 移动端的菜单按钮 -->
-    <button class="menu-toggle">
-        <svg viewBox="0 0 64 48">
-            <path  d="M19,15 L45,15 C70,15 58,-2 49.0177126,7 L19,37"></path>
-            <path  d="M19,24 L45,24 C61.2371586,24 57,49 41,33 L32,24"></path>
-            <path  d="M45,33 L19,33 C-8,33 6,-2 22,14 L45,37"></path>
-        </svg>
-    </button>
-
     <main>
-        <!-- 图片展示部分 -->
-        <section class="image-section">
-            <div class="image-container">
-                <!-- 使用多个img标签，每个图片设置不同的类名 -->
-                <img src="https://cllli.oss-cn-beijing.aliyuncs.com/img/1.jpg" alt="展示图片" class="image visible">
-                <img src="https://cllli.oss-cn-beijing.aliyuncs.com/img/2-2.jpg" alt="展示图片" class="image hidden">
-                <img src="https://cllli.oss-cn-beijing.aliyuncs.com/img/IMG_0587.jpg" alt="展示图片" class="image hidden">
-                <img src="https://cllli.oss-cn-beijing.aliyuncs.com/img/15.jpg" alt="展示图片" class="image hidden">
-            </div>
-        </section>
+        <div id="works" class="view-section active">
+            <section class="hero-section">
+                <div class="hero-layout">
+                    <div class="hero-meta left">
+                        <span>SELECTED WORKS</span><span class="line"></span><span>2020 — 2026</span>
+                    </div>
+                    
+                    <div class="hero-image-wrapper">
+                        <img id="hero-img" src="" alt="Hero Featured Work">
+                    </div>
 
-<!-- 个人介绍部分 -->
-    <section class="intro-section">
-        <!-- 背景视差装饰字 -->
-        <div class="bg-char">祥</div>
-
-        <div class="intro-container">
-            <!-- 左侧图片 -->
-            <div class="intro-visual reveal">
-                <img src="https://cllli.oss-cn-beijing.aliyuncs.com/img/b83c4a6b1d8e16bd4a59ae98b87ba48c.JPG" alt="祥" class="intro-portrait">
-            </div>
-
-            <!-- 右侧文字内容 -->
-            <div class="intro-content">
-                <span class="intro-label reveal">IDENTITY / DALIAN</span>
-                <h1 class="intro-name reveal">XIANG</h1>
-                <h2 class="intro-title reveal">摄影师 · 3D 艺术家 · 极客</h2>
+                    <div class="hero-meta right">
+                        <span>PHOTOGRAPHY</span><span class="line"></span><span>DALIAN, CN</span>
+                    </div>
+                </div>
                 
-                <div class="intro-description reveal">
-                捕捉光影中的静谧与秩序。
-                在这个喧嚣的世界里，我试图通过镜头做减法，寻找那一抹纯粹的平衡。
+                <div class="scroll-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="12" y1="3" x2="12" y2="21"></line>
+                        <polyline points="6 15 12 21 18 15"></polyline>
+                    </svg>
                 </div>
+            </section>
 
-                <!-- 履历网格 -->
-                <div class="achievement-grid reveal">
-                    <div class="achieve-item">
-                        <span class="achieve-num">01</span>
-                        <span class="achieve-text">1x.com 获奖摄影师🏆</span>
-                        <span class="achieve-sub">Curated Global Gallery</span>
+            <section class="gallery-container">
+                <div class="gallery" id="gallery-grid">
+                    <div class="gallery-item" 
+                         data-title="灰度架构 / Grayscale Architecture" 
+                         data-meta="2023 / DALIAN"
+                         data-story="黑与白的极致对撞，抽离色彩的喧嚣，让光影成为建筑的骨血，线条成为空间的诗行。每一格画面，都是对城市肌理最克制的艺术解构。|在灰度的层次里，建筑的轮廓与城市的呼吸悄然共振。摒弃浮华的修饰，黑白镜头定格的，是空间最本真的力量，与城市静默的灵魂。"
+                         data-images="https://cllli.oss-cn-beijing.aliyuncs.com/img/new/black/IMG_0175.jpg,https://cllli.oss-cn-beijing.aliyuncs.com/img/new/black/IMG_0587.jpg,https://cllli.oss-cn-beijing.aliyuncs.com/img/new/black/IMG_2973.jpg,https://cllli.oss-cn-beijing.aliyuncs.com/img/new/black/IMG_0657.jpg,https://cllli.oss-cn-beijing.aliyuncs.com/img/new/black/IMG_0280.jpg,https://cllli.oss-cn-beijing.aliyuncs.com/img/new/black/mmexport1733843016972~2_Original.jpg">
+                        <img src="https://cllli.oss-cn-beijing.aliyuncs.com/img/new/black/IMG_2973.jpg" alt="项目缩略图">
                     </div>
-                    <div class="achieve-item">
-                        <span class="achieve-num">02</span>
-                        <span class="achieve-text">500px / 图虫 签约摄影师📃</span>
-                        <span class="achieve-sub">Certified Artist</span>
+                    
+                    <div class="gallery-item"
+                         data-title="色彩的温度 / The Temperature of Color" 
+                         data-meta="2021 / BEIJING"
+                         data-story="色彩不仅是视觉的表象，更是情绪的显影，从落日的余晖到几何的浓烈碰撞，色调定义了瞬间的温度。|镜头捕捉光色交织的叙事，在冷暖对比的纯粹视觉中，定格最直观的感官记忆。"
+                         data-images="https://cllli.oss-cn-beijing.aliyuncs.com/img/new/color/IMG_3550.jpg,https://cllli.oss-cn-beijing.aliyuncs.com/img/new/color/IMG_1387.jpg,https://cllli.oss-cn-beijing.aliyuncs.com/img/new/color/IMG_1514.jpg,https://cllli.oss-cn-beijing.aliyuncs.com/img/new/color/IMG_0265.jpg,https://cllli.oss-cn-beijing.aliyuncs.com/img/new/color/20241123-_L5A7867_Original.jpg,https://cllli.oss-cn-beijing.aliyuncs.com/img/new/color/IMG_0635.jpg,https://cllli.oss-cn-beijing.aliyuncs.com/img/new/color/IMG_0355.jpg,https://cllli.oss-cn-beijing.aliyuncs.com/img/new/color/IMG_0325.jpg">
+                        <img src="https://cllli.oss-cn-beijing.aliyuncs.com/img/new/color/IMG_1514.jpg" alt="项目缩略图">
                     </div>
-                    <div class="achieve-item">
-                        <span class="achieve-num">03</span>
-                        <span class="achieve-text">vivo 影像大赛第二名🥈</span>
-                        <span class="achieve-sub">Vision+ coastline Awards</span>
+
+                    <div class="gallery-item"
+                         data-title="几何与留白 / Geometry and Negative Space" 
+                         data-meta="2022 / BEIJNG"
+                         data-story="剥离多余的喧嚣，取景框内只留下纯粹的几何与线条。|摄影是一场做减法的艺术，在极致的留白与锋利的切割间，重构空间的绝对理性与平静。"
+                         data-images="https://cllli.oss-cn-beijing.aliyuncs.com/img/new/line/2ABA18B3-761A-4B6C-BF2A-B79CEB33B064_1_102_o.jpg,https://cllli.oss-cn-beijing.aliyuncs.com/img/new/line/IMG_3545.jpg,https://cllli.oss-cn-beijing.aliyuncs.com/img/new/line/IMG_0801.jpg,https://cllli.oss-cn-beijing.aliyuncs.com/img/new/line/IMG_0072.jpg,https://cllli.oss-cn-beijing.aliyuncs.com/img/new/line/IMG_1367.jpg,https://cllli.oss-cn-beijing.aliyuncs.com/img/new/line/IMG_0063.jpg">
+                        <img src="https://cllli.oss-cn-beijing.aliyuncs.com/img/new/line/IMG_0801.jpg" alt="项目缩略图">
                     </div>
-                    <div class="achieve-item">
-                        <span class="achieve-num">04</span>
-                        <span class="achieve-text">虚拟城市复刻发起人🌆</span>
-                        <span class="achieve-sub">UE5 DLSKYSCRAPERS</span>
+
+                    <div class="gallery-item"
+                         data-title="仰望的刻度 / The Scale of Time" 
+                         data-meta="2023 / DALIAN"
+                         data-story="云的形态是时间的具象化，远处的白云如同静止的雪山，暗沉的积云则像海浪般汹涌，站在大连的海岸线上看着它们聚拢又消散，摄影的意义或许就是把这种转瞬即逝的宏大折叠进一张二维的图像里成为永恒。|站在大连的海岸线上，透过取景框看着它们在无尽的蓝中聚拢又消散，仿佛能体会到气流与天空交锋的瞬息万变，摄影的意义或许不仅仅是按下快门的本能，更是试图把这种转瞬即逝的宏大与敬畏小心翼翼地折叠进一张二维的图像里，让那些原本会被时间带走的瞬间，最终凝固成纯粹且永恒的视觉张力。"
+                         data-images="https://cllli.oss-cn-beijing.aliyuncs.com/img/2/IMG_2338.jpg,https://cllli.oss-cn-beijing.aliyuncs.com/img/new/cloud/IMG_0431.jpg,https://cllli.oss-cn-beijing.aliyuncs.com/img/new/cloud/IMG_0679.jpg">
+                        <img src="https://cllli.oss-cn-beijing.aliyuncs.com/img/2/IMG_2338.jpg" alt="项目缩略图">
+                    </div>
+
+                    <div class="gallery-item"
+                         data-title="空濛之境 / The Hazy Realm" 
+                         data-meta="2023 / DALIAN"
+                         data-story="雾霭漫过水面与天际，把世界揉成一片柔软的灰蓝。桥与岛在朦胧里若隐若现，所有喧嚣都沉在雾里，只剩呼吸与光影的温柔共振。|天地被雾色晕染成淡墨长卷，轮廓消隐，边界模糊。在这半明半暗的留白里，我们与世界温柔对视，听见寂静里的回响。"
+                         data-images="https://cllli.oss-cn-beijing.aliyuncs.com/img/new/fog/3170035~2_Original.jpg,https://cllli.oss-cn-beijing.aliyuncs.com/img/new/fog/IMG_1459.jpg,https://cllli.oss-cn-beijing.aliyuncs.com/img/new/fog/6.jpg,https://cllli.oss-cn-beijing.aliyuncs.com/img/new/fog/IMG_2067.jpg">
+                        <img src="https://cllli.oss-cn-beijing.aliyuncs.com/img/2/IMG_5147.JPG" alt="项目缩略图">
+                    </div>
+
+                    <div class="gallery-item"
+                         data-title="天际轮廓 / Skyline Contours" 
+                         data-meta="2023 / DALIAN"
+                         data-story="当视线越过山脊，城市的建筑肌理在晨昏的薄雾中安静地舒展。|沿着山海的交界线俯瞰，用镜头丈量天际的起伏，定格这座城市最宏大的静谧。"
+                         data-images="https://cllli.oss-cn-beijing.aliyuncs.com/img/new/city/IMG_0491.jpg,https://cllli.oss-cn-beijing.aliyuncs.com/img/new/city/IMG_0249.jpg,https://cllli.oss-cn-beijing.aliyuncs.com/img/new/city/IMG_9589.jpg,https://cllli.oss-cn-beijing.aliyuncs.com/img/new/city/IMG_0568.jpg">
+                        <img src="https://cllli.oss-cn-beijing.aliyuncs.com/img/new/city/IMG_2655.jpg" alt="项目缩略图">
+                    </div>
+
+                </div>
+            </section>
+        </div>
+
+        <div id="about" class="view-section">
+            <section class="about-section">
+                <div class="about-grid">
+                    <div class="about-image-wrapper">
+                        <img src="https://cllli.oss-cn-beijing.aliyuncs.com/img/b83c4a6b1d8e16bd4a59ae98b87ba48c.JPG" alt="XIANG Portrait" class="about-portrait">
+                    </div>
+                    <div class="about-content">
+                        <span class="label">IDENTITY / DALIAN</span>
+                        <h1>XIANG</h1>
+                        <h2>摄影师 · 3D 艺术家 · 极客</h2>
+                        <p>捕捉光影中的静谧与秩序。<br>在这个喧嚣的世界里，我试图通过镜头做减法，寻找那一抹纯粹的平衡。</p>
+                        
+                        <div class="achievements">
+                            <div class="achieve-item">
+                                <span class="achieve-num">01</span>
+                                <span class="achieve-text">1x.com 获奖摄影师</span>
+                            </div>
+                            <div class="achieve-item">
+                                <span class="achieve-num">02</span>
+                                <span class="achieve-text">500px / 图虫 签约摄影师</span>
+                            </div>
+                            <div class="achieve-item">
+                                <span class="achieve-num">03</span>
+                                <span class="achieve-text">vivo 影像大赛第二名</span>
+                            </div>
+                            <div class="achieve-item">
+                                <span class="achieve-num">04</span>
+                                <span class="achieve-text">虚拟城市复刻发起人</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
+            </section>
+        </div>
+    </main>
+
+    <footer class="site-footer">
+        <div class="footer-left">
+            &copy; 2021-2026 XIANGVISUALS. ALL RIGHTS RESERVED.
+        </div>
+        <div class="footer-right">
+            DESIGNED & PHOTOGRAPHED BY XIANG
+        </div>
+    </footer>
+
+    <div class="detail-modal" id="detail-modal">
+        <button class="minimal-close-btn" id="modal-close">
+            <span class="close-text">CLOSE</span>
+            <span class="close-icon"></span>
+        </button>
+
+        <div class="detail-content-wrapper">
+            <div class="detail-header">
+                <h2 id="detail-title">Project Title</h2>
+                <div class="detail-meta" id="detail-meta">Date / Location</div>
+            </div>
+            
+            <div class="detail-text-grid">
+                <div class="detail-story-col" id="detail-story-1">Story text 1...</div>
+                <div class="detail-story-col" id="detail-story-2">Story text 2...</div>
+            </div>
+
+            <div class="detail-images" id="detail-images">
+                <!-- 图片将由 JS 动态插入到这里 -->
             </div>
         </div>
-    </section>
-
-
-
-<div class="video-section fade-up">
-    <video autoplay loop muted playsinline>
-        <source src="https://cllli.oss-cn-beijing.aliyuncs.com/video/001.mp4" type="video/mp4">
-    </video>
-</div>
-
-
-
-<!-- 内容部分 -->
-  <div class="gallery-container">
-    <h1 class="gallery-title">随便拍拍👇</h1>
-  <div class="gallery">
-        <div class="gallery-item fade-up"><img src="https://cllli.oss-cn-beijing.aliyuncs.com/img/2/IMG_0072.jpg" alt="作品" loading="lazy"></div>
-        <div class="gallery-item fade-up"><img src="https://cllli.oss-cn-beijing.aliyuncs.com/img/2/IMG_0491.jpg" alt="作品" loading="lazy"></div>
-        <div class="gallery-item fade-up"><img src="https://cllli.oss-cn-beijing.aliyuncs.com/img/2/IMG_0801.jpg" alt="作品" loading="lazy"></div>
-        <div class="gallery-item fade-up"><img src="https://cllli.oss-cn-beijing.aliyuncs.com/img/2/2L5A0721.jpg" alt="作品" loading="lazy"></div>
-        <div class="gallery-item fade-up"><img src="https://cllli.oss-cn-beijing.aliyuncs.com/img/2/IMG_1367.jpg" alt="作品" loading="lazy"></div>
-
-        <div class="gallery-item fade-up"><img src="https://cllli.oss-cn-beijing.aliyuncs.com/img/2/IMG_2338.jpg" alt="作品" loading="lazy"></div>
-        <div class="gallery-item fade-up"><img src="https://cllli.oss-cn-beijing.aliyuncs.com/img/2/IMG_2663.jpg" alt="作品" loading="lazy"></div>
-        <div class="gallery-item fade-up"><img src="https://cllli.oss-cn-beijing.aliyuncs.com/img/2/IMG_3693.jpg" alt="作品" loading="lazy"></div>
-        <div class="gallery-item fade-up"><img src="https://cllli.oss-cn-beijing.aliyuncs.com/img/2/IMG_5147.JPG" alt="作品" loading="lazy"></div>
-        <div class="gallery-item fade-up"><img src="https://cllli.oss-cn-beijing.aliyuncs.com/img/1/IMG_6217.jpg" alt="作品" loading="lazy"></div>
-        <div class="gallery-item fade-up"><img src="https://cllli.oss-cn-beijing.aliyuncs.com/img/2.jpg" alt="作品" loading="lazy"></div>
-
-
-
-        <div class="gallery-item fade-up"><img src="https://cllli.oss-cn-beijing.aliyuncs.com/img/jpg/3.jpg" alt="作品" loading="lazy"></div>
-
-        <div class="gallery-item fade-up"><img src="https://cllli.oss-cn-beijing.aliyuncs.com/img/jpg/15.jpg" alt="作品" loading="lazy"></div>
-        <div class="gallery-item fade-up"><img src="https://cllli.oss-cn-beijing.aliyuncs.com/img/1/IMG_9659.jpg" alt="作品" loading="lazy"></div>
-        <div class="gallery-item fade-up"><img src="https://cllli.oss-cn-beijing.aliyuncs.com/img/9.jpg" alt="作品" loading="lazy"></div>
-        <div class="gallery-item fade-up"><img src="https://cllli.oss-cn-beijing.aliyuncs.com/img/1/IMG_1918.jpg" alt="作品" loading="lazy"></div>
-        <div class="gallery-item fade-up"><img src="https://cllli.oss-cn-beijing.aliyuncs.com/img/1/IMG_2589.jpg" alt="作品" loading="lazy"></div>
-        <div class="gallery-item fade-up"><img src="https://cllli.oss-cn-beijing.aliyuncs.com/img/1/IMG_3693.jpg" alt="作品" loading="lazy"></div>
-        <div class="gallery-item fade-up"><img src="https://cllli.oss-cn-beijing.aliyuncs.com/img/jpg/1.jpg" alt="作品" loading="lazy"></div>
-  </div>
-  </div>
-
-<div class="modal" id="modal">
-    <span class="close">&times;</span>
-    <img id="modal-image" src="" alt="放大照片">
-  </div>
-
-
-</main>
-
-<!-- 底栏部分 -->
-<footer class="site-footer">
-    <div class="footer-container">
-      <div class="footer-left">
-        <img src="https://cllli.oss-cn-beijing.aliyuncs.com/logo/logo.png" alt="Nature Logo" class="footer-logo">
-        <p class="copyright">© 2020-2025 Xiang Visuals. All rights reserved.</p>
-      </div>
-  
-      <div class="footer-right">
-        <nav class="footer-nav">
-          <a href="#" class="nav-link">首页</a>
-          <a href="mailto:xiangvisuals@gmail.com" class="nav-link">联系我</a> <!-- 修改后的链接 -->
-        </nav>
-      </div>
     </div>
-  </footer>
 
-    <script src="script.js"></script>
+    <div class="zoom-modal" id="zoom-modal">
+        <button class="minimal-close-btn" id="zoom-close">
+            <span class="close-text">CLOSE</span>
+            <span class="close-icon"></span>
+        </button>
+        <img id="zoom-img" src="" alt="Zoomed View">
+    </div>
 
+    <!-- ==========================================
+                    JS 逻辑交互部分 
+    ========================================== -->
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            /* ==========================================
+               0. 自定义主页随机库
+            ========================================== */
+            const heroImagesDatabase = [
+                "https://cllli.oss-cn-beijing.aliyuncs.com/img/2-2.jpg",
+                "https://cllli.oss-cn-beijing.aliyuncs.com/img/IMG_0587.jpg",
+                "https://cllli.oss-cn-beijing.aliyuncs.com/img/new/dandong/IMG_3138.JPG",
+                "https://cllli.oss-cn-beijing.aliyuncs.com/img/new/dandong/IMG_3129.JPG",
+                "https://cllli.oss-cn-beijing.aliyuncs.com/img/2/IMG_5147.JPG",
+                "https://cllli.oss-cn-beijing.aliyuncs.com/img/15.jpg"
+            ];
+            
+            const randomHeroIndex = Math.floor(Math.random() * heroImagesDatabase.length);
+            document.getElementById('hero-img').src = heroImagesDatabase[randomHeroIndex];
+
+
+            /* ==========================================
+               1. 全局 Loading 动画
+            ========================================== */
+            const loader = document.getElementById('page-loader');
+            window.addEventListener('load', () => {
+                setTimeout(() => {
+                    loader.classList.add('hidden');
+                }, 500); 
+            });
+
+            /* ==========================================
+               2. 极致顺滑自定义光标 & 全局事件委托悬停
+            ========================================== */
+            const cursor = document.getElementById('cursor');
+            let mouseX = 0, mouseY = 0;
+            let cursorX = 0, cursorY = 0;
+            let cursorVisible = false;
+
+            if (!/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+                document.addEventListener('mousemove', (e) => {
+                    mouseX = e.clientX;
+                    mouseY = e.clientY;
+                    if (!cursorVisible) {
+                        cursor.style.display = 'block';
+                        cursorVisible = true;
+                    }
+                });
+
+                const renderCursor = () => {
+                    cursorX += (mouseX - cursorX) * 0.2;
+                    cursorY += (mouseY - cursorY) * 0.2;
+                    cursor.style.transform = `translate(${cursorX}px, ${cursorY}px) translate(-50%, -50%)`;
+                    requestAnimationFrame(renderCursor);
+                };
+                requestAnimationFrame(renderCursor);
+
+                document.addEventListener('mouseover', (e) => {
+                    if (e.target.closest('a, button, .gallery-item, .detail-images img')) {
+                        cursor.classList.add('hovering');
+                    }
+                });
+                document.addEventListener('mouseout', (e) => {
+                    if (e.target.closest('a, button, .gallery-item, .detail-images img')) {
+                        cursor.classList.remove('hovering');
+                    }
+                });
+            }
+
+            /* ==========================================
+               3. 页面滚动揭示动画 (Intersection Observer)
+            ========================================== */
+            const observerOptions = { threshold: 0.1, rootMargin: "0px 0px -50px 0px" };
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        observer.unobserve(entry.target); 
+                    }
+                });
+            }, observerOptions);
+
+            const setupScrollAnimations = () => {
+                document.querySelectorAll('.gallery-item').forEach(el => {
+                    el.classList.remove('visible'); 
+                    observer.observe(el);
+                });
+            };
+            setupScrollAnimations(); 
+
+            /* ==========================================
+               4. SPA 幕布过渡切换
+            ========================================== */
+            const navLinks = document.querySelectorAll('.nav-link[data-target]');
+            const views = document.querySelectorAll('.view-section');
+            const transitionCurtain = document.getElementById('page-transition');
+
+            window.switchView = (targetId) => {
+                const currentActiveLink = document.querySelector('.nav-link.active');
+                if (currentActiveLink && currentActiveLink.dataset.target === targetId) return; 
+
+                navLinks.forEach(link => {
+                    if (link.dataset.target === targetId) link.classList.add('active');
+                    else link.classList.remove('active');
+                });
+
+                transitionCurtain.classList.add('active');
+
+                setTimeout(() => {
+                    views.forEach(view => {
+                        if (view.id === targetId) {
+                            view.style.display = 'block';
+                            setTimeout(() => view.classList.add('active'), 20);
+                        } else {
+                            view.classList.remove('active');
+                            view.style.display = 'none';
+                        }
+                    });
+
+                    window.scrollTo({ top: 0, behavior: 'instant' });
+
+                    if(targetId === 'works') {
+                        setupScrollAnimations();
+                    }
+
+                    transitionCurtain.classList.add('done');
+                    
+                    setTimeout(() => {
+                        transitionCurtain.classList.add('no-transition');
+                        transitionCurtain.classList.remove('active', 'done');
+                        void transitionCurtain.offsetWidth;
+                        transitionCurtain.classList.remove('no-transition');
+                    }, 800); 
+
+                }, 800); 
+
+                if(isNavOpen) {
+                    isNavOpen = false;
+                    menuBtn.classList.remove('active');
+                    navMenu.classList.remove('nav-open');
+                }
+            };
+
+            navLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    switchView(link.dataset.target);
+                });
+            });
+
+            /* ==========================================
+               5. 状态管理与移动端汉堡按钮复用逻辑
+            ========================================== */
+            let isNavOpen = false;
+            let isDetailModalOpen = false;
+            let isZoomModalOpen = false;
+            
+            const menuBtn = document.getElementById('menu-btn');
+            const navMenu = document.getElementById('nav-links');
+            const siteHeader = document.getElementById('site-header');
+            
+            menuBtn.addEventListener('click', () => {
+                if (isZoomModalOpen) {
+                    closeZoomModal();
+                } else if (isDetailModalOpen) {
+                    closeDetailModal();
+                } else {
+                    isNavOpen = !isNavOpen;
+                    menuBtn.classList.toggle('active', isNavOpen);
+                    navMenu.classList.toggle('nav-open', isNavOpen);
+                }
+            });
+
+            /* ==========================================
+               6. 高级组图项目画廊逻辑 (Detail Modal)
+            ========================================== */
+            const detailModal = document.getElementById('detail-modal');
+            const detailTitle = document.getElementById('detail-title');
+            const detailMeta = document.getElementById('detail-meta');
+            const detailStory1 = document.getElementById('detail-story-1');
+            const detailStory2 = document.getElementById('detail-story-2');
+            const detailImagesBox = document.getElementById('detail-images');
+            
+            const desktopCloseBtn = document.getElementById('modal-close');
+
+            document.querySelectorAll('.gallery-item').forEach(item => {
+                item.addEventListener('click', () => {
+                    detailTitle.textContent = item.dataset.title || "Untitled Project";
+                    detailMeta.textContent = item.dataset.meta || "Xiang Visuals";
+                    
+                    const stories = (item.dataset.story || "").split('|');
+                    detailStory1.textContent = stories[0] || "";
+                    detailStory2.textContent = stories[1] || "";
+
+                    detailImagesBox.innerHTML = '';
+                    const imageUrls = (item.dataset.images || item.dataset.src).split(',');
+                    
+                    imageUrls.forEach((url, index) => {
+                        const imgEl = document.createElement('img');
+                        imgEl.src = url.trim();
+                        imgEl.alt = "Project Photograph";
+                        imgEl.onload = () => {
+                            setTimeout(() => {
+                                imgEl.classList.add('loaded');
+                            }, index * 250);
+                        };
+                        detailImagesBox.appendChild(imgEl);
+                    });
+
+                    isDetailModalOpen = true;
+                    menuBtn.classList.add('active'); 
+                    siteHeader.classList.add('over-modal'); 
+
+                    detailModal.style.display = 'block';
+                    document.body.style.overflow = 'hidden'; 
+                    detailModal.scrollTop = 0; 
+                    setTimeout(() => detailModal.classList.add('show'), 10);
+                });
+            });
+
+            const closeDetailModal = () => {
+                detailModal.classList.remove('show');
+                document.body.style.overflow = ''; 
+                
+                isDetailModalOpen = false;
+                if (!isNavOpen) {
+                    menuBtn.classList.remove('active'); 
+                }
+                siteHeader.classList.remove('over-modal'); 
+
+                setTimeout(() => {
+                    detailModal.style.display = 'none';
+                    detailImagesBox.innerHTML = ''; 
+                }, 600); 
+            };
+
+            desktopCloseBtn.addEventListener('click', closeDetailModal);
+            
+            detailModal.addEventListener('click', (e) => {
+                if (e.target === detailModal || e.target.classList.contains('detail-content-wrapper')) {
+                    closeDetailModal(); 
+                }
+            });
+
+            /* ==========================================
+               7. 单图极致放大模态框逻辑 (Zoom Modal)
+            ========================================== */
+            const zoomModal = document.getElementById('zoom-modal');
+            const zoomImg = document.getElementById('zoom-img');
+            const desktopZoomClose = document.getElementById('zoom-close');
+
+            detailImagesBox.addEventListener('click', (e) => {
+                if (e.target.tagName === 'IMG') {
+                    zoomImg.src = e.target.src;
+                    
+                    isZoomModalOpen = true;
+
+                    zoomModal.style.display = 'flex';
+                    setTimeout(() => zoomModal.classList.add('show'), 10);
+                }
+            });
+
+            const closeZoomModal = () => {
+                zoomModal.classList.remove('show');
+                isZoomModalOpen = false; 
+
+                setTimeout(() => {
+                    zoomModal.style.display = 'none';
+                    zoomImg.src = '';
+                }, 600);
+            };
+
+            desktopZoomClose.addEventListener('click', closeZoomModal);
+            zoomModal.addEventListener('click', (e) => {
+                if (e.target === zoomModal) closeZoomModal();
+            });
+
+        });
+    </script>
+
+    <!-- ==========================================
+         Microsoft Clarity 性能优化加载方案 
+    ========================================== -->
+    <script type="text/javascript">
+        // 核心优化思路：完全不阻塞主渲染线程和首屏图片加载
+        window.addEventListener('load', function() {
+            // 定义 Clarity 的初始化函数
+            var initClarity = function() {
+                (function(c,l,a,r,i,t,y){
+                    c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+                    t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+                    y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+                })(window, document, "clarity", "script", "qt6tim5n2h");
+            };
+
+            // 使用 requestIdleCallback 确保在浏览器空闲时再执行脚本加载
+            if ('requestIdleCallback' in window) {
+                requestIdleCallback(initClarity);
+            } else {
+                // 如果浏览器不支持，则在页面加载完毕后再延迟1秒执行，确保绝对不抢网速
+                setTimeout(initClarity, 1000);
+            }
+        });
+    </script>
 </body>
 </html>
-
-
-
-
-
-
 
